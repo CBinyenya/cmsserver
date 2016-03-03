@@ -1,0 +1,1049 @@
+2016-03-01 21:38:56+0300 [-] Log opened.
+2016-03-01 21:38:56+0300 [-] PBServerFactory starting on 13333
+2016-03-01 21:38:56+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x026D2EB8>
+2016-03-01 21:40:26+0300 [Broker,0,127.0.0.1] Server responding to request with company information
+2016-03-01 21:40:26+0300 [Broker,0,127.0.0.1] server requesting for all clients with balance
+2016-03-01 21:40:27+0300 [Broker,0,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 21:40:27+0300 [Broker,0,127.0.0.1] server requesting for all clients with renewal
+2016-03-01 21:40:28+0300 [Broker,0,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 21:40:32+0300 [Broker,0,127.0.0.1] server requesting for all clients with expiry
+2016-03-01 21:40:32+0300 [Broker,0,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 21:40:34+0300 [Broker,0,127.0.0.1] server requesting for all clients
+2016-03-01 21:40:35+0300 [Broker,0,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 21:52:01+0300 [-] Received SIGINT, shutting down.
+2016-03-01 21:52:01+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-01 21:52:01+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x026D2EB8>
+2016-03-01 21:52:01+0300 [-] Main loop terminated.
+2016-03-01 21:52:06+0300 [-] Log opened.
+2016-03-01 21:52:06+0300 [-] PBServerFactory starting on 13333
+2016-03-01 21:52:06+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02882EB8>
+2016-03-01 21:53:10+0300 [Broker,0,127.0.0.1] admin asking for authentification
+2016-03-01 21:53:15+0300 [Broker,1,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 21:53:15+0300 [Broker,1,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 21:53:15+0300 [Broker,1,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 21:53:15+0300 [Broker,1,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 21:53:15+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 21:53:15+0300 [Broker,1,127.0.0.1] Server responding to request with 0 bank
+2016-03-01 21:53:16+0300 [Broker,1,127.0.0.1] Server responding to request with 0 payee
+2016-03-01 21:53:16+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheque types
+2016-03-01 21:53:16+0300 [Broker,1,127.0.0.1] Server responding to request with 0 users
+2016-03-01 21:53:16+0300 [Broker,1,127.0.0.1] Server responding to request with company information
+2016-03-01 21:53:16+0300 [Broker,1,127.0.0.1] Server responding to request with 3 names
+2016-03-01 21:53:16+0300 [Broker,1,127.0.0.1] Peer will receive following PB traceback:
+2016-03-01 21:53:16+0300 [Broker,1,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 242, in perspectiveMessageReceived
+	    state = method(*args, **kw)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 386, in perspective_app_details
+	    return self.todoList.app_details()
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 276, in app_details
+	    details['members'] = self.get_group_members("all")
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 110, in get_group_members
+	    data = self.db_manager.get_group_members(name)
+	  File "D:\Projects\CMS\server1.3\database.py", line 645, in get_group_members
+	    diction['Id_no'] = member.id
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\orm\attributes.py", line 239, in __get__
+	    return self.impl.get(instance_state(instance), dict_)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\orm\attributes.py", line 589, in get
+	    value = callable_(state, passive)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\orm\state.py", line 424, in __call__
+	    self.manager.deferred_scalar_loader(self, toload)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\orm\loading.py", line 563, in load_scalar_attributes
+	    (state_str(state)))
+	sqlalchemy.orm.exc.DetachedInstanceError: Instance <Member at 0x5218810> is not bound to a Session; attribute refresh operation cannot proceed
+	
+2016-03-01 21:53:36+0300 [Broker,2,127.0.0.1] Server responding to request with company information
+2016-03-01 21:53:36+0300 [Broker,2,127.0.0.1] server requesting for all clients with balance
+2016-03-01 21:53:36+0300 [Broker,2,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 21:53:37+0300 [Broker,2,127.0.0.1] server requesting for all clients with renewal
+2016-03-01 21:53:37+0300 [Broker,2,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 21:53:41+0300 [Broker,2,127.0.0.1] server requesting for all clients with expiry
+2016-03-01 21:53:41+0300 [Broker,2,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 21:53:43+0300 [Broker,2,127.0.0.1] server requesting for all clients
+2016-03-01 21:53:43+0300 [Broker,2,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 21:56:15+0300 [-] Received SIGINT, shutting down.
+2016-03-01 21:56:15+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-01 21:56:15+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x02882EB8>
+2016-03-01 21:56:15+0300 [-] Main loop terminated.
+2016-03-01 21:56:22+0300 [-] Log opened.
+2016-03-01 21:56:22+0300 [-] PBServerFactory starting on 13333
+2016-03-01 21:56:22+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02542EB8>
+2016-03-01 21:57:35+0300 [Broker,0,127.0.0.1] admin asking for authentification
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with 0 bank
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with 0 payee
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheque types
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with 0 users
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with company information
+2016-03-01 21:57:40+0300 [Broker,1,127.0.0.1] Server responding to request with 3 names
+2016-03-01 21:57:41+0300 [Broker,1,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 21:57:41+0300 [Broker,1,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 21:57:50+0300 [Broker,2,127.0.0.1] Server responding to request with company information
+2016-03-01 21:57:50+0300 [Broker,2,127.0.0.1] server requesting for all clients with balance
+2016-03-01 21:57:50+0300 [Broker,2,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 21:57:51+0300 [Broker,2,127.0.0.1] server requesting for all clients with renewal
+2016-03-01 21:57:51+0300 [Broker,2,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 21:57:55+0300 [Broker,2,127.0.0.1] server requesting for all clients with expiry
+2016-03-01 21:57:55+0300 [Broker,2,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 21:57:58+0300 [Broker,2,127.0.0.1] server requesting for all clients
+2016-03-01 21:57:58+0300 [Broker,2,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:10:27+0300 [-] Received SIGINT, shutting down.
+2016-03-01 22:10:27+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-01 22:10:27+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x02542EB8>
+2016-03-01 22:10:27+0300 [-] Main loop terminated.
+2016-03-01 22:10:32+0300 [-] Log opened.
+2016-03-01 22:10:32+0300 [-] PBServerFactory starting on 13333
+2016-03-01 22:10:32+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02502EB8>
+2016-03-01 22:11:05+0300 [Broker,0,127.0.0.1] admin asking for authentification
+2016-03-01 22:11:13+0300 [Broker,1,127.0.0.1] admin asking for authentification
+2016-03-01 22:11:18+0300 [Broker,2,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:11:18+0300 [Broker,2,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:11:18+0300 [Broker,2,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:11:18+0300 [Broker,2,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:11:18+0300 [Broker,2,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:11:18+0300 [Broker,2,127.0.0.1] Server responding to request with 0 bank
+2016-03-01 22:11:18+0300 [Broker,2,127.0.0.1] Server responding to request with 1 payee
+2016-03-01 22:11:18+0300 [Broker,2,127.0.0.1] Server responding to request with 0 cheque types
+2016-03-01 22:11:18+0300 [Broker,2,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:11:19+0300 [Broker,2,127.0.0.1] Server responding to request with company information
+2016-03-01 22:11:19+0300 [Broker,2,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:11:19+0300 [Broker,2,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:11:19+0300 [Broker,2,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:12:01+0300 [Broker,4,127.0.0.1] Server responding to request with company information
+2016-03-01 22:12:01+0300 [Broker,4,127.0.0.1] server requesting for all clients with balance
+2016-03-01 22:12:01+0300 [Broker,4,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:12:02+0300 [Broker,5,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:12:02+0300 [Broker,5,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:12:02+0300 [Broker,5,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:12:03+0300 [Broker,5,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:12:03+0300 [Broker,5,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:12:03+0300 [Broker,5,127.0.0.1] Server responding to request with 0 bank
+2016-03-01 22:12:03+0300 [Broker,5,127.0.0.1] Server responding to request with 2 payee
+2016-03-01 22:12:03+0300 [Broker,5,127.0.0.1] Server responding to request with 0 cheque types
+2016-03-01 22:12:03+0300 [Broker,5,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:12:03+0300 [Broker,5,127.0.0.1] Server responding to request with company information
+2016-03-01 22:12:03+0300 [Broker,5,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:12:03+0300 [Broker,5,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:12:03+0300 [Broker,5,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:12:04+0300 [Broker,4,127.0.0.1] server requesting for all clients with renewal
+2016-03-01 22:12:05+0300 [Broker,4,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:12:09+0300 [Broker,4,127.0.0.1] server requesting for all clients with expiry
+2016-03-01 22:12:09+0300 [Broker,4,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:12:11+0300 [Broker,4,127.0.0.1] server requesting for all clients
+2016-03-01 22:12:11+0300 [Broker,4,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 1 bank
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 2 payee
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 0 cheque types
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with company information
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:12:36+0300 [Broker,7,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 1 bank
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 2 payee
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 1 cheque types
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with company information
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:13:15+0300 [Broker,10,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:13:34+0300 [Broker,12,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:13:34+0300 [Broker,12,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:13:34+0300 [Broker,12,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:13:35+0300 [Broker,12,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:13:35+0300 [Broker,12,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:13:35+0300 [Broker,12,127.0.0.1] Server responding to request with 1 bank
+2016-03-01 22:13:35+0300 [Broker,12,127.0.0.1] Server responding to request with 2 payee
+2016-03-01 22:13:35+0300 [Broker,12,127.0.0.1] Server responding to request with 1 cheque types
+2016-03-01 22:13:35+0300 [Broker,12,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:13:35+0300 [Broker,12,127.0.0.1] Server responding to request with company information
+2016-03-01 22:13:35+0300 [Broker,12,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:13:35+0300 [Broker,12,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:13:35+0300 [Broker,12,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:19:05+0300 [-] Received SIGINT, shutting down.
+2016-03-01 22:19:05+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-01 22:19:05+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x02502EB8>
+2016-03-01 22:19:05+0300 [-] Main loop terminated.
+2016-03-01 22:19:10+0300 [-] Log opened.
+2016-03-01 22:19:10+0300 [-] PBServerFactory starting on 13333
+2016-03-01 22:19:10+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02702EB8>
+2016-03-01 22:19:24+0300 [Broker,0,127.0.0.1] admin asking for authentification
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 1 bank
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 2 payee
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with company information
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:19:29+0300 [Broker,1,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:20:20+0300 [Broker,5,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 1 bank
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 3 payee
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with company information
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:20:21+0300 [Broker,5,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:20:22+0300 [Broker,4,127.0.0.1] <bound method AdminPerspective.perspective_addBank of <__main__.AdminPerspective instance at 0x04BE9B98>> didn't accept (u'I % M',) and {}
+2016-03-01 22:20:22+0300 [Broker,4,127.0.0.1] Peer will receive following PB traceback:
+2016-03-01 22:20:22+0300 [Broker,4,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 242, in perspectiveMessageReceived
+	    state = method(*args, **kw)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 346, in perspective_addBank
+	    return self.todoList.addBank(arg)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 177, in addBank
+	    response = self.db_manager.add_bank(arg)
+	  File "D:\Projects\CMS\server1.3\database.py", line 332, in add_bank
+	    if any(self.engine.execute(sql)):
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 1752, in execute
+	    return connection.execute(statement, *multiparams, **params)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 721, in execute
+	    return self._execute_text(object, multiparams, params)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 870, in _execute_text
+	    statement, parameters
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 958, in _execute_context
+	    context)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 1163, in _handle_dbapi_exception
+	    util.reraise(*exc_info)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 951, in _execute_context
+	    context)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\default.py", line 436, in do_execute
+	    cursor.execute(statement, parameters)
+	  File "d:\python27\lib\site-packages\MySQLdb\cursors.py", line 184, in execute
+	    query = query % db.literal(args)
+	exceptions.TypeError: not enough arguments for format string
+	
+2016-03-01 22:20:40+0300 [Broker,6,127.0.0.1] Server responding to request with company information
+2016-03-01 22:20:40+0300 [Broker,6,127.0.0.1] server requesting for all clients with balance
+2016-03-01 22:20:40+0300 [Broker,6,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:20:41+0300 [Broker,6,127.0.0.1] server requesting for all clients with renewal
+2016-03-01 22:20:41+0300 [Broker,6,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:20:45+0300 [Broker,6,127.0.0.1] server requesting for all clients with expiry
+2016-03-01 22:20:45+0300 [Broker,6,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:20:48+0300 [Broker,6,127.0.0.1] server requesting for all clients
+2016-03-01 22:20:48+0300 [Broker,6,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:21:59+0300 [Broker,7,127.0.0.1] <bound method AdminPerspective.perspective_addBank of <__main__.AdminPerspective instance at 0x0560DE90>> didn't accept (u'I % M',) and {}
+2016-03-01 22:21:59+0300 [Broker,7,127.0.0.1] Peer will receive following PB traceback:
+2016-03-01 22:21:59+0300 [Broker,7,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 242, in perspectiveMessageReceived
+	    state = method(*args, **kw)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 346, in perspective_addBank
+	    return self.todoList.addBank(arg)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 177, in addBank
+	    response = self.db_manager.add_bank(arg)
+	  File "D:\Projects\CMS\server1.3\database.py", line 332, in add_bank
+	    if any(self.engine.execute(sql)):
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 1752, in execute
+	    return connection.execute(statement, *multiparams, **params)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 721, in execute
+	    return self._execute_text(object, multiparams, params)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 870, in _execute_text
+	    statement, parameters
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 958, in _execute_context
+	    context)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 1163, in _handle_dbapi_exception
+	    util.reraise(*exc_info)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\base.py", line 951, in _execute_context
+	    context)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\engine\default.py", line 436, in do_execute
+	    cursor.execute(statement, parameters)
+	  File "d:\python27\lib\site-packages\MySQLdb\cursors.py", line 184, in execute
+	    query = query % db.literal(args)
+	exceptions.TypeError: not enough arguments for format string
+	
+2016-03-01 22:21:59+0300 [Broker,8,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:21:59+0300 [Broker,8,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with 1 bank
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with 3 payee
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with company information
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:22:00+0300 [Broker,8,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:22:22+0300 [Broker,10,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 2 bank
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 3 payee
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with company information
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:22:23+0300 [Broker,10,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 2 bank
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 3 payee
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with company information
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:23:09+0300 [Broker,12,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 3 bank
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 3 payee
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with company information
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:24:13+0300 [Broker,14,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:25:59+0300 [-] Received SIGINT, shutting down.
+2016-03-01 22:25:59+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-01 22:25:59+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x02702EB8>
+2016-03-01 22:25:59+0300 [-] Main loop terminated.
+2016-03-01 22:26:03+0300 [-] Log opened.
+2016-03-01 22:26:03+0300 [-] PBServerFactory starting on 13333
+2016-03-01 22:26:03+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02782EB8>
+2016-03-01 22:26:41+0300 [Broker,0,127.0.0.1] Server responding to update message request (u'balance', 'message', u'Dear Client, your outstanding insurance premium balance is Ksh $AMOUNT. Kindly send your payment. For enquiries call 0714 046604/0737 046604. Thanks for your support.')
+2016-03-01 22:26:51+0300 [Broker,2,127.0.0.1] Server responding to update message request (u'balance', 'message', u'Dear Client, your outstanding insurance premium balance is Ksh $AMOUNT. Kindly send your payment. For enquiries call 0714 046604/0737 046604. Thanks for your support.')
+2016-03-01 22:27:33+0300 [Broker,6,127.0.0.1] Server responding to request with company information
+2016-03-01 22:27:33+0300 [Broker,6,127.0.0.1] server requesting for all clients with balance
+2016-03-01 22:27:34+0300 [Broker,6,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:27:34+0300 [Broker,6,127.0.0.1] server requesting for all clients with renewal
+2016-03-01 22:27:34+0300 [Broker,6,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:27:38+0300 [Broker,6,127.0.0.1] server requesting for all clients with expiry
+2016-03-01 22:27:39+0300 [Broker,6,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:27:42+0300 [Broker,6,127.0.0.1] server requesting for all clients
+2016-03-01 22:27:42+0300 [Broker,6,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:35:15+0300 [Broker,10,127.0.0.1] Peer will receive following PB traceback:
+2016-03-01 22:35:15+0300 [Broker,10,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 240, in perspectiveMessageReceived
+	    method = getattr(self, "perspective_%s" % message)
+	exceptions.AttributeError: AdminPerspective instance has no attribute 'perspective_deleteGroupClient'
+	
+2016-03-01 22:40:03+0300 [Broker,11,127.0.0.1] Peer will receive following PB traceback:
+2016-03-01 22:40:03+0300 [Broker,11,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 240, in perspectiveMessageReceived
+	    method = getattr(self, "perspective_%s" % message)
+	exceptions.AttributeError: AdminPerspective instance has no attribute 'perspective_delete group member'
+	
+2016-03-01 22:40:49+0300 [Broker,12,127.0.0.1] Server responding to request
+2016-03-01 22:41:06+0300 [Broker,13,127.0.0.1] Server responding to request
+2016-03-01 22:41:13+0300 [Broker,14,127.0.0.1] Server responding to request
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 3 bank
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 3 payee
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with company information
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:41:20+0300 [Broker,15,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:50:09+0300 [Broker,16,127.0.0.1] admin asking for authentification
+2016-03-01 22:50:13+0300 [Broker,17,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 3 bank
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 3 payee
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with company information
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:50:14+0300 [Broker,17,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:50:36+0300 [-] Peer will receive following PB traceback:
+2016-03-01 22:50:36+0300 [-] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\internet\defer.py", line 577, in _runCallbacks
+	    current.result = callback(current.result, *args, **kw)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 451, in _gotQueryResults
+	    self._checkedPassword, userid)
+	  File "d:\python27\lib\site-packages\twisted\internet\defer.py", line 306, in addCallback
+	    callbackKeywords=kw)
+	  File "d:\python27\lib\site-packages\twisted\internet\defer.py", line 295, in addCallbacks
+	    self._runCallbacks()
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\internet\defer.py", line 577, in _runCallbacks
+	    current.result = callback(current.result, *args, **kw)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 459, in _checkedPassword
+	    raise credError.UnauthorizedLogin("Bad password")
+	twisted.cred.error.UnauthorizedLogin: Bad password
+	
+2016-03-01 22:51:37+0300 [Broker,20,127.0.0.1] admin asking for authentification
+2016-03-01 22:51:46+0300 [Broker,21,127.0.0.1] admin asking for authentification
+2016-03-01 22:51:51+0300 [Broker,22,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:51:51+0300 [Broker,22,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:51:51+0300 [Broker,22,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:51:52+0300 [Broker,22,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:51:52+0300 [Broker,22,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:51:52+0300 [Broker,22,127.0.0.1] Server responding to request with 3 bank
+2016-03-01 22:51:52+0300 [Broker,22,127.0.0.1] Server responding to request with 3 payee
+2016-03-01 22:51:52+0300 [Broker,22,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-01 22:51:52+0300 [Broker,22,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:51:52+0300 [Broker,22,127.0.0.1] Server responding to request with company information
+2016-03-01 22:51:52+0300 [Broker,22,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:51:52+0300 [Broker,22,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:51:52+0300 [Broker,22,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 22:52:00+0300 [Broker,23,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 670 balances
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 670 clients
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 0 cheques
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 3 bank
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 3 payee
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 0 users
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with company information
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 3 names
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 4 group clients
+2016-03-01 22:52:01+0300 [Broker,23,127.0.0.1] Server responding to request with 7 messages
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] 17 messages waiting to be sent
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-01 23:05:48+0300 [Broker,24,127.0.0.1] Internet error
+2016-03-02 08:38:12+0300 [-] Log opened.
+2016-03-02 08:38:12+0300 [-] PBServerFactory starting on 13333
+2016-03-02 08:38:12+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x0288AEB8>
+2016-03-02 08:39:40+0300 [Broker,0,127.0.0.1] Server responding to request with company information
+2016-03-02 08:39:40+0300 [Broker,0,127.0.0.1] server requesting for all clients with balance
+2016-03-02 08:39:40+0300 [Broker,0,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 08:39:41+0300 [Broker,0,127.0.0.1] server requesting for all clients with renewal
+2016-03-02 08:39:42+0300 [Broker,0,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 08:39:46+0300 [Broker,0,127.0.0.1] server requesting for all clients with expiry
+2016-03-02 08:39:46+0300 [Broker,0,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 08:39:49+0300 [Broker,0,127.0.0.1] server requesting for all clients
+2016-03-02 08:39:49+0300 [Broker,0,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 08:55:41+0300 [Broker,1,127.0.0.1] admin asking for authentification
+2016-03-02 08:55:51+0300 [Broker,2,127.0.0.1] admin asking for authentification
+2016-03-02 08:55:56+0300 [Broker,3,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 08:55:56+0300 [Broker,3,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 08:55:56+0300 [Broker,3,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 08:55:57+0300 [Broker,3,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 08:55:57+0300 [Broker,3,127.0.0.1] Server responding to request with 0 cheques
+2016-03-02 08:55:57+0300 [Broker,3,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 08:55:57+0300 [Broker,3,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 08:55:57+0300 [Broker,3,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 08:55:57+0300 [Broker,3,127.0.0.1] Server responding to request with 0 users
+2016-03-02 08:55:57+0300 [Broker,3,127.0.0.1] Server responding to request with company information
+2016-03-02 08:55:57+0300 [Broker,3,127.0.0.1] Server responding to request with 3 names
+2016-03-02 08:55:57+0300 [Broker,3,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 08:55:57+0300 [Broker,3,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 08:59:24+0300 [Broker,4,127.0.0.1] admin asking for authentification
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 0 cheques
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 0 users
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with company information
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 3 names
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 08:59:29+0300 [Broker,5,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 09:01:35+0300 [Broker,6,127.0.0.1] admin asking for authentification
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 0 cheques
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 0 users
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with company information
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 3 names
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 09:01:39+0300 [Broker,7,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 09:04:08+0300 [Broker,8,127.0.0.1] admin asking for authentification
+2016-03-02 09:04:12+0300 [Broker,9,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 09:04:12+0300 [Broker,9,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 09:04:12+0300 [Broker,9,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 09:04:12+0300 [Broker,9,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 09:04:12+0300 [Broker,9,127.0.0.1] Server responding to request with 0 cheques
+2016-03-02 09:04:12+0300 [Broker,9,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 09:04:12+0300 [Broker,9,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 09:04:12+0300 [Broker,9,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 09:04:12+0300 [Broker,9,127.0.0.1] Server responding to request with 0 users
+2016-03-02 09:04:13+0300 [Broker,9,127.0.0.1] Server responding to request with company information
+2016-03-02 09:04:13+0300 [Broker,9,127.0.0.1] Server responding to request with 3 names
+2016-03-02 09:04:13+0300 [Broker,9,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 09:04:13+0300 [Broker,9,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 09:05:07+0300 [Broker,10,127.0.0.1] admin asking for authentification
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 0 cheques
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 0 users
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with company information
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 3 names
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 09:05:11+0300 [Broker,11,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 09:17:21+0300 [-] Received SIGINT, shutting down.
+2016-03-02 09:17:21+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-02 09:17:21+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x0288AEB8>
+2016-03-02 09:17:21+0300 [-] Main loop terminated.
+2016-03-02 09:17:28+0300 [-] Log opened.
+2016-03-02 09:17:28+0300 [-] PBServerFactory starting on 13333
+2016-03-02 09:17:28+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02CB5EB8>
+2016-03-02 09:17:57+0300 [Broker,0,127.0.0.1] admin asking for authentification
+2016-03-02 09:18:02+0300 [Broker,1,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 09:18:02+0300 [Broker,1,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 09:18:02+0300 [Broker,1,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 09:18:02+0300 [Broker,1,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 09:18:02+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheques
+2016-03-02 09:18:02+0300 [Broker,1,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 09:18:02+0300 [Broker,1,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 09:18:02+0300 [Broker,1,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 09:18:02+0300 [Broker,1,127.0.0.1] Peer will receive following PB traceback:
+2016-03-02 09:18:02+0300 [Broker,1,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 242, in perspectiveMessageReceived
+	    state = method(*args, **kw)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 386, in perspective_app_details
+	    return self.todoList.app_details()
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 273, in app_details
+	    details['users'] = self.getUsers("all")
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 130, in getUsers
+	    data = self.db_manager.get_user(Type)
+	exceptions.AttributeError: 'DatabaseManager' object has no attribute 'get_user'
+	
+2016-03-02 09:18:30+0300 [-] Received SIGINT, shutting down.
+2016-03-02 09:18:30+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-02 09:18:30+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x02CB5EB8>
+2016-03-02 09:18:30+0300 [-] Main loop terminated.
+2016-03-02 09:18:37+0300 [-] Log opened.
+2016-03-02 09:18:37+0300 [-] PBServerFactory starting on 13333
+2016-03-02 09:18:37+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02B15EB8>
+2016-03-02 09:18:58+0300 [Broker,0,127.0.0.1] admin asking for authentification
+2016-03-02 09:19:02+0300 [Broker,1,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 09:19:02+0300 [Broker,1,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 09:19:02+0300 [Broker,1,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 09:19:02+0300 [Broker,1,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 09:19:02+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheques
+2016-03-02 09:19:02+0300 [Broker,1,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 09:19:03+0300 [Broker,1,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 09:19:03+0300 [Broker,1,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 09:19:03+0300 [Broker,1,127.0.0.1] Peer will receive following PB traceback:
+2016-03-02 09:19:03+0300 [Broker,1,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 242, in perspectiveMessageReceived
+	    state = method(*args, **kw)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 386, in perspective_app_details
+	    return self.todoList.app_details()
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 273, in app_details
+	    details['users'] = self.getUsers("all")
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 130, in getUsers
+	    data = self.db_manager.get_users(Type)
+	  File "D:\Projects\CMS\server1.3\database.py", line 591, in get_users
+	    diction['username'] = user.username
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\orm\attributes.py", line 239, in __get__
+	    return self.impl.get(instance_state(instance), dict_)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\orm\attributes.py", line 589, in get
+	    value = callable_(state, passive)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\orm\state.py", line 424, in __call__
+	    self.manager.deferred_scalar_loader(self, toload)
+	  File "d:\python27\lib\site-packages\sqlalchemy-0.9.7-py2.7.egg\sqlalchemy\orm\loading.py", line 563, in load_scalar_attributes
+	    (state_str(state)))
+	sqlalchemy.orm.exc.DetachedInstanceError: Instance <User at 0x522c970> is not bound to a Session; attribute refresh operation cannot proceed
+	
+2016-03-02 09:19:43+0300 [-] Received SIGINT, shutting down.
+2016-03-02 09:19:43+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-02 09:19:43+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x02B15EB8>
+2016-03-02 09:19:43+0300 [-] Main loop terminated.
+2016-03-02 09:19:48+0300 [-] Log opened.
+2016-03-02 09:19:48+0300 [-] PBServerFactory starting on 13333
+2016-03-02 09:19:48+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02742EB8>
+2016-03-02 09:20:08+0300 [Broker,0,127.0.0.1] admin asking for authentification
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheques
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 13 users
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with company information
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 3 names
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 09:20:13+0300 [Broker,1,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 09:21:19+0300 [Broker,2,127.0.0.1] Server responding to request with company information
+2016-03-02 09:21:19+0300 [Broker,2,127.0.0.1] server requesting for all clients with balance
+2016-03-02 09:21:19+0300 [Broker,2,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 09:21:19+0300 [Broker,2,127.0.0.1] server requesting for all clients with renewal
+2016-03-02 09:21:20+0300 [Broker,2,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 09:21:23+0300 [Broker,2,127.0.0.1] server requesting for all clients with expiry
+2016-03-02 09:21:24+0300 [Broker,2,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 09:21:26+0300 [Broker,2,127.0.0.1] server requesting for all clients
+2016-03-02 09:21:26+0300 [Broker,2,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] 20 messages waiting to be sent
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:23:52+0300 [Broker,3,127.0.0.1] Internet error
+2016-03-02 09:30:21+0300 [Broker,5,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 0 cheques
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 13 users
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with company information
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 3 names
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 09:30:22+0300 [Broker,5,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 09:31:03+0300 [Broker,6,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 09:31:03+0300 [Broker,6,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 09:31:03+0300 [Broker,6,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 09:31:04+0300 [Broker,6,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 09:31:04+0300 [Broker,6,127.0.0.1] Server responding to request with 1 cheques
+2016-03-02 09:31:04+0300 [Broker,6,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 09:31:04+0300 [Broker,6,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 09:31:04+0300 [Broker,6,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 09:31:04+0300 [Broker,6,127.0.0.1] Server responding to request with 13 users
+2016-03-02 09:31:04+0300 [Broker,6,127.0.0.1] Server responding to request with company information
+2016-03-02 09:31:04+0300 [Broker,6,127.0.0.1] Server responding to request with 3 names
+2016-03-02 09:31:04+0300 [Broker,6,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 09:31:04+0300 [Broker,6,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 09:32:32+0300 [Broker,8,127.0.0.1] Peer will receive following PB traceback:
+2016-03-02 09:32:32+0300 [Broker,8,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 242, in perspectiveMessageReceived
+	    state = method(*args, **kw)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 414, in perspective_delete_group
+	    return self.todoList.delete_group(arg)
+	  File "D:\Projects\CMS\server1.3\dbserverapp.py", line 125, in delete_group
+	    response = self.db_manager.groups.delete_group(name)
+	exceptions.AttributeError: 'DatabaseManager' object has no attribute 'groups'
+	
+2016-03-02 09:35:08+0300 [Broker,9,127.0.0.1] Peer will receive following PB traceback:
+2016-03-02 09:35:08+0300 [Broker,9,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 240, in perspectiveMessageReceived
+	    method = getattr(self, "perspective_%s" % message)
+	exceptions.AttributeError: AdminPerspective instance has no attribute 'perspective_restartSendingThread'
+	
+2016-03-02 09:40:34+0300 [Broker,10,127.0.0.1] Peer will receive following PB traceback:
+2016-03-02 09:40:34+0300 [Broker,10,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 240, in perspectiveMessageReceived
+	    method = getattr(self, "perspective_%s" % message)
+	exceptions.AttributeError: AdminPerspective instance has no attribute 'perspective_restartSendingThread'
+	
+2016-03-02 09:42:05+0300 [Broker,11,127.0.0.1] Peer will receive following PB traceback:
+2016-03-02 09:42:05+0300 [Broker,11,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 240, in perspectiveMessageReceived
+	    method = getattr(self, "perspective_%s" % message)
+	exceptions.AttributeError: AdminPerspective instance has no attribute 'perspective_postMessages'
+	
+2016-03-02 09:44:37+0300 [-] Received SIGINT, shutting down.
+2016-03-02 09:44:37+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-02 09:44:37+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x02742EB8>
+2016-03-02 09:44:37+0300 [-] Main loop terminated.
+2016-03-02 09:44:44+0300 [-] Log opened.
+2016-03-02 09:44:44+0300 [-] PBServerFactory starting on 13333
+2016-03-02 09:44:44+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x024E2EB8>
+2016-03-02 09:46:13+0300 [Broker,0,127.0.0.1] Server responding to request with company information
+2016-03-02 09:46:13+0300 [Broker,0,127.0.0.1] server requesting for all clients with balance
+2016-03-02 09:46:13+0300 [Broker,0,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 09:46:14+0300 [Broker,0,127.0.0.1] server requesting for all clients with renewal
+2016-03-02 09:46:14+0300 [Broker,0,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 09:46:18+0300 [Broker,0,127.0.0.1] server requesting for all clients with expiry
+2016-03-02 09:46:18+0300 [Broker,0,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 09:46:21+0300 [Broker,0,127.0.0.1] server requesting for all clients
+2016-03-02 09:46:21+0300 [Broker,0,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 10:03:05+0300 [-] Received SIGINT, shutting down.
+2016-03-02 10:03:05+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-02 10:03:05+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x024E2EB8>
+2016-03-02 10:03:05+0300 [-] Main loop terminated.
+2016-03-02 10:03:09+0300 [-] Log opened.
+2016-03-02 10:03:09+0300 [-] PBServerFactory starting on 13333
+2016-03-02 10:03:09+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02C0DF80>
+2016-03-02 10:03:22+0300 [Broker,0,127.0.0.1] admin asking for authentification
+2016-03-02 10:03:26+0300 [Broker,1,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 10:03:26+0300 [Broker,1,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with 1 cheques
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with 13 users
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with company information
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with 3 names
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 10:03:27+0300 [Broker,1,127.0.0.1] Server responding to outbox request
+2016-03-02 10:03:53+0300 [Broker,2,127.0.0.1] Peer will receive following PB traceback:
+2016-03-02 10:03:53+0300 [Broker,2,127.0.0.1] Unhandled Error
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
+	    self.callExpressionReceived(item)
+	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
+	    self.expressionReceived(obj)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
+	    method(*sexp[1:])
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
+	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
+	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 240, in perspectiveMessageReceived
+	    method = getattr(self, "perspective_%s" % message)
+	exceptions.AttributeError: AdminPerspective instance has no attribute 'perspective_postMessages'
+	
+2016-03-02 10:04:40+0300 [Broker,3,127.0.0.1] Server responding to request with company information
+2016-03-02 10:04:40+0300 [Broker,3,127.0.0.1] server requesting for all clients with balance
+2016-03-02 10:04:40+0300 [Broker,3,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 10:04:40+0300 [Broker,3,127.0.0.1] server requesting for all clients with renewal
+2016-03-02 10:04:41+0300 [Broker,3,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 10:04:44+0300 [Broker,3,127.0.0.1] server requesting for all clients with expiry
+2016-03-02 10:04:45+0300 [Broker,3,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 10:04:47+0300 [Broker,3,127.0.0.1] server requesting for all clients
+2016-03-02 10:04:47+0300 [Broker,3,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 10:07:49+0300 [Broker,4,127.0.0.1] admin asking for authentification
+2016-03-02 10:07:54+0300 [Broker,5,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 10:07:54+0300 [Broker,5,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with 1 cheques
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with 13 users
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with company information
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with 3 names
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 10:07:55+0300 [Broker,5,127.0.0.1] Server responding to outbox request
+2016-03-02 10:08:18+0300 [Broker,6,127.0.0.1] Server responding to outbox request
+2016-03-02 10:09:03+0300 [Broker,7,127.0.0.1] Server responding to outbox request
+2016-03-02 10:09:13+0300 [Broker,8,127.0.0.1] Server responding to outbox request
+2016-03-02 10:11:37+0300 [Broker,9,127.0.0.1] Server responding to outbox request
+2016-03-02 10:15:30+0300 [Broker,10,127.0.0.1] Server responding to outbox request
+2016-03-02 10:17:53+0300 [Broker,11,127.0.0.1] admin asking for authentification
+2016-03-02 10:17:59+0300 [Broker,12,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 10:17:59+0300 [Broker,12,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 10:17:59+0300 [Broker,12,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 10:17:59+0300 [Broker,12,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 10:17:59+0300 [Broker,12,127.0.0.1] Server responding to request with 1 cheques
+2016-03-02 10:17:59+0300 [Broker,12,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 10:17:59+0300 [Broker,12,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 10:17:59+0300 [Broker,12,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 10:17:59+0300 [Broker,12,127.0.0.1] Server responding to request with 13 users
+2016-03-02 10:18:00+0300 [Broker,12,127.0.0.1] Server responding to request with company information
+2016-03-02 10:18:00+0300 [Broker,12,127.0.0.1] Server responding to request with 3 names
+2016-03-02 10:18:00+0300 [Broker,12,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 10:18:00+0300 [Broker,12,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 10:18:00+0300 [Broker,12,127.0.0.1] Server responding to outbox request
+2016-03-02 10:19:59+0300 [Broker,13,127.0.0.1] Reginah asking for authentification
+2016-03-02 10:20:08+0300 [Broker,14,127.0.0.1] Reginah asking for authentification
+2016-03-02 10:20:16+0300 [Broker,15,127.0.0.1] Reginah asking for authentification
+2016-03-02 10:20:30+0300 [Broker,16,127.0.0.1] admin asking for authentification
+2016-03-02 10:20:35+0300 [Broker,17,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 10:20:35+0300 [Broker,17,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with 1 cheques
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with 13 users
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with company information
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with 3 names
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 10:20:36+0300 [Broker,17,127.0.0.1] Server responding to outbox request
+2016-03-02 10:21:16+0300 [Broker,18,127.0.0.1] Reginah asking for authentification
+2016-03-02 10:21:21+0300 [Broker,19,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 10:21:21+0300 [Broker,19,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with 1 cheques
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with 13 users
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with company information
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with 3 names
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 10:21:22+0300 [Broker,19,127.0.0.1] Server responding to outbox request
+2016-03-02 10:21:53+0300 [Broker,20,127.0.0.1] Server responding to outbox request
+2016-03-02 10:23:49+0300 [Broker,21,127.0.0.1] admin asking for authentification
+2016-03-02 10:23:54+0300 [Broker,22,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 10:23:54+0300 [Broker,22,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with 1 cheques
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with 13 users
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with company information
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with 3 names
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 10:23:55+0300 [Broker,22,127.0.0.1] Server responding to outbox request
+2016-03-02 10:25:14+0300 [Broker,24,127.0.0.1] Server responding to update message request (u'cheque', 'message', u'Dear Client kindly note that your $TYPE cheque no: $NUMBER ( $BANK ) of Ksh $AMOUNT is due for banking on $DUE. For enquiries call 0714 046604. Thank you')
+2016-03-02 10:43:22+0300 [Broker,28,127.0.0.1] admin asking for authentification
+2016-03-02 10:43:27+0300 [Broker,29,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 10:43:27+0300 [Broker,29,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with 1 cheques
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with 13 users
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with company information
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with 3 names
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 10:43:28+0300 [Broker,29,127.0.0.1] Server responding to outbox request
+2016-03-02 11:00:51+0300 [Broker,30,127.0.0.1] admin asking for authentification
+2016-03-02 11:00:54+0300 [Broker,31,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 11:00:54+0300 [Broker,31,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 11:00:54+0300 [Broker,31,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 11:00:54+0300 [Broker,31,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 11:00:54+0300 [Broker,31,127.0.0.1] Server responding to request with 1 cheques
+2016-03-02 11:00:54+0300 [Broker,31,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 11:00:54+0300 [Broker,31,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 11:00:54+0300 [Broker,31,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 11:00:54+0300 [Broker,31,127.0.0.1] Server responding to request with 13 users
+2016-03-02 11:00:55+0300 [Broker,31,127.0.0.1] Server responding to request with company information
+2016-03-02 11:00:55+0300 [Broker,31,127.0.0.1] Server responding to request with 3 names
+2016-03-02 11:00:55+0300 [Broker,31,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 11:00:55+0300 [Broker,31,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 11:00:55+0300 [Broker,31,127.0.0.1] Server responding to outbox request
+2016-03-02 11:10:30+0300 [Broker,32,127.0.0.1] admin asking for authentification
+2016-03-02 11:10:35+0300 [Broker,33,127.0.0.1] Server responding to request with 2592 renewals
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 670 balances
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 670 clients
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 1999 expiries
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 1 cheques
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 3 bank
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 3 payee
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 2 cheque types
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 13 users
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with company information
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 3 names
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 4 group clients
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to request with 7 messages
+2016-03-02 11:10:36+0300 [Broker,33,127.0.0.1] Server responding to outbox request
+2016-03-02 11:32:27+0300 [-] Received SIGINT, shutting down.
+2016-03-02 11:32:27+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-02 11:32:27+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x02C0DF80>
+2016-03-02 11:32:27+0300 [-] Main loop terminated.
+2016-03-02 16:13:41+0300 [-] Log opened.
+2016-03-02 16:13:41+0300 [-] PBServerFactory starting on 13333
+2016-03-02 16:13:41+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x027638A0>
+2016-03-02 16:14:24+0300 [-] Received SIGINT, shutting down.
+2016-03-02 16:14:24+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-02 16:14:24+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x027638A0>
+2016-03-02 16:14:24+0300 [-] Main loop terminated.
+2016-03-02 16:14:29+0300 [-] Received SIGINT, shutting down.
+2016-03-02 16:14:29+0300 [-] Traceback (most recent call last):
+2016-03-02 16:14:29+0300 [-]   File "runserver.py", line 559, in <module>
+2016-03-02 16:14:29+0300 [-]     time.sleep(90)
+2016-03-02 16:14:29+0300 [-] IOError: [Errno 4] Interrupted function call

@@ -1,0 +1,28 @@
+(dp1
+S'general'
+p2
+S''
+sS'renewal'
+p3
+S'Dear Client, your $POLICY policy expires on $DATE. Kindly send us the renewal instructions. For enquiries call 0714 046604/0737 046604. Thank you'
+p4
+sS'newinvoice'
+p5
+S'Dear Client. We have renewed your $POLICY policy. Kindly let us have yourpayment of Ksh:$AMOUNT.For enquiries call 0714 046604/0737 046604. Thank you.'
+p6
+sS'quicktxt'
+p7
+S''
+sS'birthday'
+p8
+S'Wishing you the very best as you celebrate your big day. Happy Birthday to you from INSURANCE'
+p9
+sS'cheque'
+p10
+S'Dear Client kindly note that your $TYPE cheque no: $NUMBER ( $BANK ) of Ksh $AMOUNT is due for banking on $DUE. For enquiries call 0714 046604/0737 046604. Thank you'
+p11
+sS'balance'
+p12
+S'Dear Client, your outstanding insurance premium balance is Ksh $AMOUNT. Kindly send your payment. For enquiries call 0714 046604/0737 046604.Thanks for your support.'
+p13
+s.

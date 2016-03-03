@@ -2,6 +2,7 @@ __author__ = 'Monte'
 import os
 import sys
 import cPickle as pickle
+from contextlib import closing
 from zope.interface import Interface, implements
 from twisted.cred.checkers import ANONYMOUS, AllowAnonymousAccess
 from twisted.protocols import basic
@@ -13,6 +14,7 @@ from twisted.python import logfile
 
 from database import DatabaseManager
 from messenger import Messenger
+from functions import FileManager, message_sender
 
 class ServerFunctions:
     def __init__(self, users, passwords, db_manager):
@@ -21,12 +23,11 @@ class ServerFunctions:
         self.db_manager = db_manager
         self.user_id = ""
 
-    def authorizeUser(self,details):
+    def authorizeUser(self, details):
         """method to authorize users"""
         self.passwords = self.db_manager.get_user_details("passwords")
         diction = {}
-        for user,passwd in self.passwords.items():
-            print user,passwd
+        for user, passwd in self.passwords.items():
             if (details['username'] == user) and (details['password'] == passwd):
                 diction[user] = passwd
         self.user_id = details['username']
@@ -63,10 +64,13 @@ class ServerFunctions:
         print >>sys.stderr, "Server responding to request with %d extensions" % len(data)
         return data
 
-    def addUser(self, args):
+    def add_user(self, args):
         """Method that adds new user to the system"""
         response = self.db_manager.add_user(args)
-        print >>sys.stderr, "%s adding new user to the system" % self.user_id
+        if response[0]:
+            pass
+            #register(args[0], args[1])
+        print >>sys.stderr, "Admin adding new user to the system"
         return response
 
     def getCompanyDetails(self):
@@ -127,7 +131,37 @@ class ServerFunctions:
             register(arg[0],arg[2])
         return response
 
-    def addCompanyDetails(self,args):
+    def update_message(self, arg):
+        response = self.db_manager.update_message(arg)
+        print >>sys.stderr, "Server responding to update message request", arg
+        return response
+
+    def update_cheque(self, arg):
+        response = self.db_manager.update_cheque(arg)
+        return response
+
+    def update_config(self, arg):
+        flm = FileManager()
+        response = flm.change_config(arg)
+        return response
+
+    def update_amount(self, arg):
+        responses = list()
+        for amount in arg:
+            responses.append(self.update_config(amount))
+        results = ""
+        if len(arg) > 1:
+            if responses[0][0] and responses[1][0]:
+                results = (True, "Minimum and maximum amounts have been set")
+            elif responses[0][0] or responses[1][0]:
+                results = (False, "Error in updating either maximum or minimum amounts")
+            else:
+                results = (False, "Could not update minimum and maximum amount")
+        else:
+            return responses[0]
+        return results
+
+    def addCompanyDetails(self, args):
         response = self.db_manager.add_company_details(args)
         return response
 
@@ -164,9 +198,10 @@ class ServerFunctions:
         return response
 
     def sendMessage(self, arg):
-        send = Messenger(arg)
-        print send.check_config()
-        send.send_sms()
+        for message in arg:
+            self.db_manager.add_outbox(message)
+        response = message_sender()
+        return response
 
     def getChequeType(self):
         response = self.db_manager.get_chequetype()
@@ -193,23 +228,47 @@ class ServerFunctions:
         print >>sys.stderr, "Server responding to request with %d messages" % len(response)
         return response
 
+    def set_default_message(self, arg):
+        with closing(open("bin/messages", "rb")) as fl:
+            msgs = pickle.load(fl)
+        if arg.lower() in msgs.keys():
+            message = msgs[arg.lower()]
+            return self.db_manager.update_message((arg.lower(), "message", message))
+        else:
+            return False, "Default message for %s  could not be found" % arg.capitalize()
+
+    @staticmethod
+    def read_file(file_name):
+        file_ = "bin/%s.dat" % file_name
+        with closing(open(file_, "rb")) as fl:
+            data = pickle.load(fl)
+        return data
+
+    @staticmethod
+    def get_configurations():
+        with closing(open("bin/config.conf")) as fl:
+            data = pickle.load(fl)
+        return data
+
     def app_details(self):
         details = dict()
         details['renewal'] = self.postRenewals()
         details['balance'] = self.postBalance()
         details['allclients'] = self.postClients()
         details['expiry'] = self.postExpiry()
-        details['extensions'] = self.postExtensions()
+        """details['extensions'] = ServerFunctions.read_file("extensions")"""
         details['cheques'] = self.getCheques()
         details['banks'] = self.getBank()
         details['payee'] = self.getPayee()
         details['chequetype'] = self.getChequeType()
         details['users'] = self.getUsers("all")
-        details['compdetails'] = self.getCompanyDetails()
+        details['compdetails'] = ServerFunctions.read_file("compdetails")
         details['groups'] = self.getGroupNames("all")
         details['gnames'] = self.getGroupClients("all")
         details['messages'] = self.getMessages()
+        details['config'] = ServerFunctions.get_configurations()
         return details
+
 
 
 
@@ -316,7 +375,25 @@ class UserPerspective(pb.Avatar):
         """Perspective to get all app details"""
         return self.todoList.app_details()
 
+    def perspective_update_message(self, arg):
+        """Perspective to update message"""
+        return self.todoList.update_message(arg)
 
+    def perspective_update_config(self, args):
+        """Perspective to update configuration file"""
+        return self.todoList.update_config(args)
+
+    def perspective_update_amount(self, arg):
+        """Perspective to update minimum and maximum amounts"""
+        return self.todoList.update_amount(arg)
+
+    def perspective_update_cheque(self, args):
+        """Perspective to update cheque details"""
+        return self.todoList.update_cheque(args)
+
+    def perspective_set_default_message(self, arg):
+        """Resets a perticular message type to its default message"""
+        return self.todoList.set_default_message(arg)
 
 
 class AdminPerspective(UserPerspective):
@@ -332,9 +409,10 @@ class AdminPerspective(UserPerspective):
         """Perspective to change and add company details"""
         return self.todoList.addCompanyDetails(args)
 
-    def perspective_addUser(self, args):
+    def perspective_add_user(self, args):
         """Perspective to add new User to the system"""
-        return self.todoList.addUser(args)
+        return self.todoList.add_user(args)
+
 
 
 class PasswordDictChecker(object):
@@ -441,27 +519,3 @@ def main():
     reactor.listenTCP(13333, pb.PBServerFactory(p))
     reactor.run()
 main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

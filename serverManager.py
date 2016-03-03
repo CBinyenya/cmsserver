@@ -5,7 +5,7 @@ from twisted.internet import reactor
 from twisted.spread import pb
 from twisted.cred import credentials
 from appmanager import log
-from twisted.internet.error import DNSLookupError, ReactorNotRestartable, ReactorAlreadyRunning
+from twisted.internet.error import ReactorNotRestartable, ReactorAlreadyRunning
 
 clients = []
 def runKlass(details):        
@@ -81,7 +81,7 @@ class Messanger(object):
         return self.server.callRemote("postClients").addCallback(self._got_all_clients)
 
     def get_company_details(self):        
-        return self.server.callRemote("getCompanyDetails").addCallback(self._getCompanyDetails)
+        return self.server.callRemote("get_company_details").addCallback(self._get_company_details)
 
     def _got_clients_with_balance(self, arg):
         self.save_data(arg, "balance")
@@ -95,7 +95,7 @@ class Messanger(object):
     def _got_all_clients(self, arg):
         self.save_data(arg, "allclients")
 
-    def _getCompanyDetails(self, arg):
+    def _get_company_details(self, arg):
         self.save_data(arg, "compdetails")
 
     def save_data(self, data, type_):

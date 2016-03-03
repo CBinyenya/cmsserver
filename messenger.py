@@ -1,4 +1,3 @@
-import os
 import sys
 import urllib
 import urllib2
@@ -13,7 +12,7 @@ class Messenger(object):
         self.kwd = kwd
 
     def check_config(self, protocol):
-        """Configures the usernames,key and port numbers"""
+        """Configures the username, key and port numbers"""
         def read():
             try:
                 with closing(open("bin/conf", "rb")) as fl:

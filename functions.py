@@ -1,13 +1,280 @@
-import os
 import re
-import wx
 import sys
 import pyodbc
 import sqlite3
 import MySQLdb
+import datetime
 from time import strftime, strptime, ctime
-import cPickle as pickle
+import cPickle as Pickle
 from contextlib import closing
+
+
+from database import DatabaseManager
+from messenger import Messenger
+from security import Security
+from appmanager import *
+
+def db_manager():
+    db = DatabaseManager()
+    sec = Security()
+    dialect = sec.dialect
+    user = sec.user
+    password = sec.password
+    database = sec.database
+    db.connect(dialect=dialect, user=user, passwd=password, database=database)
+    return db
+
+
+def message_collector():
+        waiting_messages = list()
+        messages = db_manager().get_outbox("waiting")
+        if isinstance(messages, list) and messages:
+            for message in messages:
+                inst = PhoneNumber(message["phone"])
+                phn = inst.list_of_numbers()
+                if phn:
+                    message_tuple = (message["phone"], message["message"])
+                else:
+                    continue
+                waiting_messages.append(message_tuple)
+        return waiting_messages
+
+def message_sender():
+        waiting_messages = message_collector()
+        msg = "%d messages waiting to be sent" % len(waiting_messages)
+        log.info(msg)
+        print >>sys.stdout, msg
+        sent_list = []
+        for message in waiting_messages:
+            sender = Messenger([message])
+            sender.check_config("smsleopard")
+            sent_msg = sender.send_sms()[0]
+            sent_list.extend(sent_msg)
+        msg = "%d sent messages" % len(sent_list)
+        log.info(msg)
+        for sent in sent_list:
+            db_manager().update_outbox(sent)
+        return True, msg
+
+class FileManager(object):
+    """
+    Contains methods responsible for managing the crucial file components of the application
+    This files include:
+    allclients.dat
+    balance.dat
+    extensions.dat
+    expiry.dat
+    config.conf
+    etc.
+    """
+    def __init__(self):
+        self.files = {
+            "clients": "allclients.dat",
+            "balance": "balance.dat",
+            "renewal": "expiry.dat",
+            "newinvoice": "renewal.dat",
+            "extension": "extensions.dat",
+            "birthday": "allclients.dat",
+            "cheque": "",
+
+        }
+        self.database = DatabaseManager()
+        self.report_file = "bin/report"
+        self.message_file = "bin/messages"
+        self.config_file = "bin/config.conf"
+        self.folders = ["bin"]
+        self.initializer()
+        self.configarations()
+        self.security = Security()
+        self.user = self.security.user
+        self.password = self.security.password
+        self.dialect = self.security.dialect
+        self.db = self.security.database
+        self.database.connect(dialect=self.dialect, user=self.user, passwd=self.password, database=self.db)
+
+    def initializer(self):
+        for name in self.folders:
+            if not os.path.exists(name):
+                os.mkdir(name)
+        for key, name in self.files.items():
+            name = "bin/" + name
+            if not os.path.exists(name):
+                msg = key + " file missing"
+                self.reporter((False, msg))
+                log.warning(msg)
+            else:
+                msg = key + " file found"
+                self.reporter(("server", msg))
+
+    def configarations(self):
+        """
+         interval is the date differences that the messages should be sent.
+         status determines if the messages are to be sent or not
+         next means the next date general messages have to be sent
+        """
+        config_types = {
+            'clients': {"interval": False, "status": False, "next": False},
+            'balance': {"interval": False, "status": False, "min": 500, "max": 1000000},
+            'renewal': {"interval": [15, 5], "status": True},
+            'newinvoice': {"interval": [15, 5], "status": False, "min": 500, "max": 1000000},
+            'extension': {"interval": [15, 5], "status": False},
+            'birthday': {"status": True},
+            'cheque': {"interval": [2, 0], "status": True},
+            'connection': {'dialect': "mysql", 'database': "bima"},
+        }
+
+        if not os.path.exists(self.config_file):
+            with closing(open(self.config_file, "wb")) as fl:
+                Pickle.dump(config_types, fl)
+                log.info("Setting up system configurations")
+        if not os.path.exists(self.message_file):
+            self.initialize_messages()
+
+    def reporter(self, details):
+        """
+        Manages a report file that has details on errors and ho the application
+        executes the most important steps.
+        The details parameter is either a Tuple or a list of Tuples.
+        The tuple has a type of message and the message itself. Error messages
+        are represented by a False object while the rest have there specific names
+        written out.
+        """
+        if not os.path.exists(self.report_file):
+            with open(self.report_file, "wb") as fl:
+                Pickle.dump([], fl)
+        with closing(open(self.report_file, "rb")) as fl:
+            data = Pickle.load(fl)
+        with closing(open(self.report_file, "wb")) as fl:
+            if isinstance(details, tuple):
+                now = time.ctime()
+                type_ = details[0]
+                message = details[1]
+                data.append((now, type_, message))
+            elif isinstance(details, list):
+                for detail in details:
+                    now = time.ctime()
+                    type_ = detail[0]
+                    message = detail
+                    data.append((now, type_, message))
+            Pickle.dump(data, fl)
+
+    def report_reader(self):
+        """Returns the content of the report file which can then be written in a logfile"""
+        if not os.path.exists(self.report_file):
+            return "File does not exist"
+        else:
+            with closing(open(self.report_file, "rb")) as fl:
+                data = Pickle.load(fl)
+        return data
+
+    def initialize_messages(self):
+        """Creates the message file and initializes the default messages in it"""
+        company = self.database.get_company_details()
+        try:
+            mobile = company["Mobile"]
+        except KeyError:
+            mobile = "[REPLACE PHONE]"
+        balance = "Dear Client, your outstanding insurance premium balance is Ksh $AMOUNT. Kindly" + \
+                  " send your payment. For enquiries call %s.Thanks for your support." % mobile
+        renewal = "Dear Client, your $POLICY policy expires on $DATE. Kindly send us the renewal" +\
+                  " instructions. For enquiries call %s. Thank you" % mobile
+        newinvoice = "Dear Client. We have renewed your $POLICY policy. Kindly let us have your" + \
+                     "payment of Ksh:$AMOUNT.For enquiries call %s. Thank you." % mobile
+        cheque = "Dear Client kindly note that your $TYPE cheque no: $NUMBER ( $BANK ) of Ksh $AMOUNT is due for" + \
+                 " banking on $DUE. For enquiries call %s. Thank you" % mobile
+        general = ""
+        quick = ""
+        birthday = "Wishing you the very best as you celebrate your big day. Happy Birthday to you from INSURANCE"
+        default = {
+            "balance": balance,
+            "renewal": renewal,
+            "newinvoice": newinvoice,
+            "general": general,
+            "quicktxt": quick,
+            "birthday": birthday,
+            "cheque": cheque,
+        }
+        with closing(open(self.message_file, "wb")) as fl:
+            Pickle.dump(default, fl)
+            log.info("Setting up default message files and details")
+        log.debug("Setting up message database configurations")
+        for key, value in default.items():
+            data = (key, "server", False, value, datetime.datetime.today())
+            self._add_message(data)
+
+    def _add_message(self, data):
+        database = DatabaseManager()
+        security = Security()
+        user = security.user
+        password = security.password
+        dialect = security.dialect
+        db = security.database
+        database.connect(dialect=dialect, user=user, passwd=password, database=db)
+        database.add_messages(data)
+
+    def read_message(self, type_):
+        """Returns the message of the type given in the parameter"""
+        if not os.path.exists(self.message_file):
+            messages = self.initialize_messages()
+        else:
+            with closing(open(self.message_file)) as fl:
+                messages = Pickle.load(fl)
+        try:
+            message = messages[type_]
+        except KeyError:
+            return False
+        return message
+
+    def change_message(self, type_, message):
+        """Changes the message specified in by the type parameter"""
+        with closing(open(self.message_file, "rb")) as fl:
+            data = Pickle.load(fl)
+        with closing(open(self.message_file, "wb")) as fl:
+            data[type_] = message
+            Pickle.dump(data, fl)
+
+    def change_config(self, arg):
+        type_, details, update = arg
+        if not os.path.exists(self.config_file):
+            self.configarations()
+        with closing(open(self.config_file, "rb")) as fl:
+            data = Pickle.load(fl)
+        data[type_][details] = update
+        with closing(open(self.config_file, "wb")) as fl:
+            Pickle.dump(data, fl)
+        if details in ["min", "max"]:
+            return True, "%s has been updated to Ksh %d" % (details.capitalize(), update)
+        elif details == "status":
+            if update:
+                return True, "Sending of %s messages has been automated" % type_
+            else:
+                return True, "Automation of %s messages has been turned off" % type_
+        elif details == "interval":
+            if not update:
+                return True, "Messaging frequency for %s has been turned of! Please use the drop down choices to \
+                             activate the specific frequency" % type_
+            return True, "Messaging frequency for %s has been updated to after %s days" % (type_, repr(update))
+        else:
+            return True, " %s configurations for %s has been updated" % (details, type_)
+
+    def read_file(self, name):
+        """Returns the contents of the data files containing the client details eg the balance file"""
+        try:
+            file_name = "bin/" + self.files[name]
+        except KeyError:
+            return False, "Invalid file name request"
+        try:
+            with closing(open(file_name, "rb")) as fl:
+                data = Pickle.load(fl)
+            if isinstance(data, list):
+                return True, data
+            else:
+                print file_name, type(data)
+                return False, "The %s file has been corrupted" % name
+        except EOFError:
+            return False, "The %s file has been corrupted or cannot be found" % name
+        except IOError:
+            return False, "The %s file does not exists" % name
 
 
 
@@ -33,7 +300,7 @@ class Configuration(object):
             try:
                 with closing(open(self.filename, 'rb')) as fl:
                     try:
-                        data = pickle.load(fl)
+                        data = Pickle.load(fl)
                         return data
                     except EOFError:
                         print >>sys.stderr, "Empty file!"
@@ -56,7 +323,7 @@ class Configuration(object):
         else:
             data[name] = value
         with closing(open(self.filename, 'wb')) as fl:
-            pickle.dump(data, fl)
+            Pickle.dump(data, fl)
 
         return True
 
@@ -75,7 +342,7 @@ class Filemanagement(object):
             try:
                 with closing(open(self.filename, 'rb')) as fl:
                     try:
-                        data = pickle.load(fl)
+                        data = Pickle.load(fl)
                         return data
                     except EOFError:
                         print >>sys.stderr, "Empty file!"
@@ -86,7 +353,7 @@ class Filemanagement(object):
 
     def write(self, data):
         with closing(open(self.filename, 'wb')) as fl:
-            pickle.dump(data, fl)
+            Pickle.dump(data, fl)
         return True
 
 
@@ -288,7 +555,7 @@ class InboxManager(object):
             except WindowsError:
                 pass
             with closing(open(name, "w")) as fl:
-                pickle.dump({'current': []}, fl)
+                Pickle.dump({'current': []}, fl)
             return name
 
     def update(self, data, **keyword):
@@ -346,7 +613,7 @@ class InboxManager(object):
     def read(self):
         try:
             with closing(open(self.inbox, "rb")) as fl:
-                data1 = pickle.load(fl)
+                data1 = Pickle.load(fl)
         except EOFError:
             data1 = {'current': []}
         return data1
@@ -354,7 +621,7 @@ class InboxManager(object):
     def write(self, data):
         try:
             with closing(open(self.inbox, "wb")) as fl:
-                pickle.dump(data, fl)
+                Pickle.dump(data, fl)
         except WindowsError:
             return False
         return True
@@ -366,7 +633,7 @@ class Datahandler(object):
     def allClients(self):
         try:
             with open("appfiles/allclients.dat","rb") as newfile:
-                data = pickle.load(newfile)
+                data = Pickle.load(newfile)
                 return data
         except IOError, e:
             wx.MessageBox("All clients file is missing!!","System Error",wx.ICON_ERROR)
@@ -375,7 +642,7 @@ class Datahandler(object):
     def renewalClients(self):
         try:
             with open("bin/renewal.dat","rb") as newfile:
-                data = pickle.load(newfile)
+                data = Pickle.load(newfile)
         except IOError, e:
             wx.MessageBox("Renewal file missing!!","System Error",wx.ICON_ERROR)
         return data
@@ -383,7 +650,7 @@ class Datahandler(object):
     def extensionClients(self):
         try:
             with open("bin/extensions.dat","rb") as newfile:
-                data = pickle.load(newfile)
+                data = Pickle.load(newfile)
                 print len(data)
         except IOError, e:
             wx.MessageBox("Extension file is missing!!","System Error",wx.ICON_ERROR)
@@ -394,7 +661,7 @@ class Datahandler(object):
         clients = []
         try:
             with open("bin/balance.dat","rb") as newfile:
-                data = pickle.load(newfile)
+                data = Pickle.load(newfile)
         except IOError ,e:
             wx.MessageBox("Balance file is missing!!","System Error",wx.ICON_ERROR)
         for i in data:
@@ -407,14 +674,14 @@ class Datahandler(object):
     def expiryClients(self):
         try:
             with open("bin/expiry.dat","rb") as newfile:
-                data = pickle.load(newfile)
+                data = Pickle.load(newfile)
             return data
         except IOError, e:
             wx.MessageBox("Expiry file is missing!!","System Error",wx.ICON_ERROR)
     def fun_get_location(self):
         try:
             with open("bin/allclients.dat","rb") as newfile:
-                data = pickle.load(newfile)
+                data = Pickle.load(newfile)
         except IOError, e:
             wx.MessageBox("Important system file is missing!!","System Error",wx.ICON_ERROR)
 
@@ -428,7 +695,7 @@ class Datahandler(object):
     def fun_get_occupation(self):
         try:
             with open("bin/allclients.dat","rb") as newfile:
-                data = pickle.load(newfile)
+                data = Pickle.load(newfile)
         except IOError, e:
             wx.MessageBox("Important system file is missing!!","System Error",wx.ICON_ERROR)
         lists=[]
@@ -442,7 +709,7 @@ class Datahandler(object):
         lists = []
         try:
             with open("bin/allclients.dat","rb") as newfile:
-                data = pickle.load(newfile)
+                data = Pickle.load(newfile)
         except IOError,e:
             wx.MessageBox("Birthday file is missing!!","System Error",wx.ICON_ERROR)
         for i in data:
@@ -581,7 +848,7 @@ class GroupClassFunctions(object):
         self.create_table()
         try:
             with open("bin/groupclients.dat","rb") as newfile:
-                data = pickle.load(newfile)
+                data = Pickle.load(newfile)
         except IOError,e:
             wx.MessageBox("Important system file is missing!!","System Error",wx.ICON_ERROR)
 
@@ -798,7 +1065,7 @@ class InboxManager(object):
             try:os.mkdir("bin")
             except:pass
             with closing(open(name,"w")) as fl:
-                pickle.dump({'current':[]},fl)
+                Pickle.dump({'current':[]},fl)
             return name
     def update(self,data,**keyword):
         dict_list = self._format_data(data,keyword)
@@ -853,7 +1120,7 @@ class InboxManager(object):
     def read(self):
         try:
             with closing(open(self.inbox,"rb")) as fl:
-                data1 = pickle.load(fl)
+                data1 = Pickle.load(fl)
         except EOFError:
             data1 = {'current':[]}
         return data1
@@ -861,7 +1128,7 @@ class InboxManager(object):
     def write(self,data):
         try:
             with closing(open(self.inbox,"wb")) as fl:
-                pickle.dump(data,fl)
+                Pickle.dump(data,fl)
         except:
             return False
         return True

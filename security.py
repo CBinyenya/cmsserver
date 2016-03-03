@@ -7,6 +7,7 @@ from appmanager import log
 
 class Security(object):
     def __init__(self):
+        Security.initialize()
         self.private = "insurance"
         self.data = self.read()
         self.password = self.get_password()
@@ -33,8 +34,8 @@ class Security(object):
         data = self.read()
         if "security" not in self.data.keys():
             log.debug("Creating security details")
-            self.data['security'] = {'user': "server2",
-                                                 'password': self.create_signature("secrete_key")}
+            self.data['security'] = {'user': "server",
+                                     'password': self.create_signature("secrete_key")}
             self.password = self.data['security']['password']
             self.user = self.data['security']['user']
             self.write()
@@ -88,4 +89,15 @@ class Security(object):
         except KeyError:
             log.warning("Database name missing")
             return "bima"
+
+    @staticmethod
+    def initialize():
+        file_name = "bin/read"
+        if not os.path.exists("bin"):
+            os.mkdir("bin")
+        if not os.path.exists(file_name):
+            with open(file_name, "wb") as fl:
+                fl.writelines(["root\n", "creawib\n", "127.0.0.1\n"])
+                fl.seek(0)
+
 

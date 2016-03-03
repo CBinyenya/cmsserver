@@ -1,4 +1,3 @@
-import os
 import sys
 import datetime
 from sqlalchemy import and_, create_engine, Column, Integer, DateTime, String, Text, LargeBinary, ForeignKey, Boolean
@@ -10,6 +9,7 @@ from security import Security
 import MySQLdb as Mysql
 from MySQLdb import ProgrammingError, OperationalError
 from appmanager import *
+from messenger import PhoneNumber
 
 Base = declarative_base()
 class Cheques(Base):
@@ -18,7 +18,7 @@ class Cheques(Base):
     cheque_id = Column(String(6), primary_key=True)
     cheque_number = Column(String(13))
     cheque_type = Column(String(30))
-    client_name = Column(String(50), nullable=False)
+    client_name = Column(String(100), nullable=False)
     amount = Column(Integer, nullable=False)
     insu_recpt = Column(String(20))
     payee = Column(String(20))
@@ -59,8 +59,9 @@ class User(Base):
     username = Column(String(20), nullable=False)
     password = Column(String(50), nullable=False)
     firstname = Column(String(20), nullable=False)
-    lastname = Column(String(20), nullable=False)
-    phone = Column(String(13), nullable=False)
+    lastname = Column(String(20))
+    title = Column(String(20))
+    phone = Column(String(13))
 
 
 class Member(Base):
@@ -87,7 +88,7 @@ class Message(Base):
 class Outbox(Base):
     __tablename__ = "outbox"
     id = Column(Integer, primary_key=True)
-    name = Column(String(30))
+    name = Column(String(100))
     recipient = Column(String(13), nullable=False)
     status = Column(String(10))
     message = Column(Text)
@@ -98,7 +99,7 @@ class Inbox(Base):
     __tablename__ = "inbox"
     id = Column(Integer, primary_key=True)
     sender = Column(String(10), nullable=False)
-    status =  Column(String(10))
+    status = Column(String(10))
     message = Column(Text)
     timedate = Column(DateTime)
 
@@ -106,7 +107,7 @@ class Inbox(Base):
 class BlackList(Base):
     __tablename__ = "blacklist"
     id = Column(Integer, primary_key=True)
-    name = Column(String(40), nullable=False)
+    name = Column(String(100), nullable=False)
     phone = Column(String(13), nullable=False)
 
 
@@ -170,15 +171,15 @@ def default_user_details():
         if len(details) < 2:
             log.warning("Read file is empty")
             sys.exit()
-        user, password = details[:2]
-    return str(user).replace('\n', ''), str(password).replace('\n', '')
+        user, password,host = details[:3]
+    return str(user).replace('\n', ''), str(password).replace('\n', ''), str(host).replace('\n', '')
 
 def create_user(user, password):
     default = default_user_details()
-    default_user, defaule_passwd = default
-    con = Mysql.connect(host="localhost", user=default_user, passwd=defaule_passwd)
+    default_user, defaule_passwd, host = default
+    con = Mysql.connect(host= host, user=default_user, passwd=defaule_passwd, port=3306)
     cursor = con.cursor()
-    query1 = "CREATE USER %s@localhost IDENTIFIED BY  '%s' " % (user, password)
+    query1 = "CREATE USER %s@%s IDENTIFIED BY  '%s' " % (user, host, password)
     query2 = "GRANT ALL ON bima.* TO %s@localhost IDENTIFIED BY '%s'" % (user, password)
     try:
         cursor.execute(query1)
@@ -274,19 +275,25 @@ class DatabaseManager(BirthMarkFunctions):
             return "Users available"
         else:
             self.add_user((self.user, self.passwd, "Monte", "Caleb", "+254704236788"))
-            self.add_user(("admin", "passwd", "Harry", "Gathogo", "+254722341870"))
+            self.add_user(("admin", "passwd", "Admin", "Admin", ""))
             
     def get_session(self):
         session = sessionmaker(bind=self.engine)
         session = session()
         return session
 
+    @staticmethod
+    def verity_phone_number(phone):
+        phn = PhoneNumber(phone)
+        return phn.list_of_numbers()
+
     def add_server_log(self, args):
         details = ServerLog(start_time=args[0], message_loops=0)
         session = self.get_session()
         session.add(details)
         session.commit()
-        return True
+        session.close()
+        return True, "Information added"
     
     def add_company_details(self, args):
         details = Settings(company_name=args[0], head_quarters=args[1], town=args[2], mobile=args[3], website=args[4],
@@ -295,7 +302,8 @@ class DatabaseManager(BirthMarkFunctions):
         session = self.get_session()
         session.add(details)
         session.commit()
-        return True
+        session.close()
+        return True, "Company details have been uploaded"
 
     def add_cheque(self, args):
         last_id = self.engine.execute("select cheque_id from cheques order by date")
@@ -313,84 +321,123 @@ class DatabaseManager(BirthMarkFunctions):
         details = Cheques(cheque_id=last_id, cheque_type=args[11], client_name=args[0], cheque_number=args[1], amount=args[2], insu_recpt=args[3],
                          payee=args[4], date=args[5], due_date=args[6], kbima_recpt=args[7], kbima_recpt_no=args[8],
                          bank=args[9], phone=args[10])
-
-
         session = self.get_session()
         session.add(details)
         session.commit()
-        return True
+        session.close()
+        return True, "New cheque has been added"
 
     def add_bank(self, arg):
+        sql = "select * from banks where bank_name = '%s'" % arg
+        if any(self.engine.execute(sql)):
+            return False, "%s already exists" % arg
         details = Banks(bank_name=arg)
         session = self.get_session()
         session.add(details)
         session.commit()
-        return True
+        session.close()
+        return True, "%s has been added" % arg
 
     def add_cheque_type(self, arg):
+        sql = "select * from cheque_type where type_name = '%s'" % arg
+        if any(self.engine.execute(sql)):
+            return False, "%s already exists" % arg
         details = ChequeType(type_name=arg)
         session = self.get_session()
         session.add(details)
         session.commit()
-        return True
+        session.close()
+        return True, "%s has been added" % arg
 
     def add_payee(self, arg):
+        sql = "select * from payee where payee_name = '%s'" % arg
+        if any(self.engine.execute(sql)):
+            return False, "%s already exists" % arg
         details = Payee(payee_name=arg)
         session = self.get_session()
         session.add(details)
         session.commit()
-        return True
+        session.close()
+        return True, "%s has been added" % arg
 
-    def add_user(self,details):
+    def add_user(self, details):
         dt = details
         sql = "select * from user where username LIKE '%s'" % (dt[0])
         sql2 = "select * from user where password LIKE '%s'" % (dt[1])
         
         if any(self.engine.execute(sql)):
-            response = ("Error", "Username is invalid")
-            return response
+            return False, "Username is invalid"
         
         if any(self.engine.execute(sql2)):
-            response = ("Error", "Password is invalid")
-            return response
+            return False, "Password is invalid"
         
         new_user = User(username=dt[0], password=dt[1], firstname=dt[2], lastname=dt[3],
                         phone=dt[4])
         session = self.get_session()
         session.add(new_user)
         session.commit()
-        return True
+        session.close()
+        if any(self.engine.execute(sql)):
+            return True, "User account for %s has been created" % dt[0]
+        else:
+            return False, "Undetermined error during creation of user account!"
+
+    def add_group_member(self, details):
+        phone = DatabaseManager.verity_phone_number(details[2])[0]
+        print "Member phone number", phone
+        if not phone:
+            return False, "Phone number is invalid"
+        query = "select group_id from groups where group_name = '%s'" % details[-1]
+        group = self.engine.execute(query)
+        session = self.get_session()
+        try:
+            for group in group:
+                group_id = group[0]
+                sql = "select * from member where phone = '%s' and group_id = '%d'" % (phone, group_id)
+                if any(self.engine.execute(sql)):
+                    return False, "A member already exists with this specifications"
+                member = Member(firstname=details[0], lastname=details[1], phone=phone, location=details[3],
+                                address=details[4], group_id=group_id)
+                session.add(member)
+                session.commit()
+                session.close()
+                sql = "select * from member where phone = '%s' and group_id = '%d'" % (phone, group_id)
+                if any(self.engine.execute(sql)):
+                    return True, "New member added to database"
+                else:
+                    return False, "Member could not be added to the database"
+        except KeyError:
+            return False, "There is no group with that name"
     
     def add_group(self, name):
-        try:
-            new_group = Groups(group_name=name)
-            session = self.get_session()
-            session.add(new_group)
-            session.commit()
-            return True,"New group created"
-        except:
-            return False, "Group could not be created"
+        query = "select group_name from groups where group_name = '%s'" % name
+        if any(self.engine.execute(query)):
+            return False, "A group exists with that name"
+        new_group = Groups(group_name=name)
+        session = self.get_session()
+        session.add(new_group)
+        session.commit()
+        session.close()
+        if any(self.engine.execute(query)):
+            return True, "%s group created" % name
+        else:
+            return False, "%s could not be created" % name
 
-    def add_member(self, dt):
-        try:
-            new_member = Member(firstname=dt[0], lastname=dt[1], phone=dt[2], location=dt[3],
-                                address=dt[4], group_id=dt[5])
-            session = self.get_session()
-            session.add(new_member)
-            session.commit()
-            return True, "Server added new member"
-        except:
-            return False, "Member could not be added"
 
     def add_messages(self, dt):
+        query = "select * from message where type like '%s'" % dt[0]
+        if any(self.engine.execute(query)):
+            return False
         try:         
             new_message = Message(type=dt[0], sender=dt[1], status=dt[2], message=dt[3], timedate=dt[4])
             session = self.get_session()
             session.add(new_message)
             session.commit()
-            return True
+            session.close()
+            if any(self.engine.execute(query)):
+                return True, "Message has been added to the database"
         except:
-            return False
+            return False, "Message could not be added to the database"
 
     def add_configurations(self, dt):
         try:         
@@ -399,15 +446,17 @@ class DatabaseManager(BirthMarkFunctions):
             session = self.get_session()
             session.add(new_message)
             session.commit()
-            return True
+            session.close()
+            return True, "Configurations have been updated"
         except:
-            return False
+            return False, "Configurations could not be updated"
 
     def add_dict(self, dt):
         try:
             session = self.get_session()
             session.query(Config).filter_by(msg_type=dt[0]).update({dt[1]: dt[2]})
             session.commit()
+            session.close()
             return True
         except:
             return False
@@ -418,6 +467,7 @@ class DatabaseManager(BirthMarkFunctions):
             session = self.get_session()
             session.add(new_schedule)
             session.commit()
+            session.close()
             return True
         except:
             return False
@@ -428,9 +478,12 @@ class DatabaseManager(BirthMarkFunctions):
             session = self.get_session()
             session.add(new_message)
             session.commit()
-            return True
+            session.close()
+            sql = "select * from outbox where name = '%s' and recipient = '%s'" % (dt[0], dt[1])
+            if any(self.engine.execute(sql)):
+                return True, "Outbox has benn updated"
         except EOFError:
-            return False
+            return False, "Outbox could not be updates"
 
     def add_inbox(self, dt):
         try:
@@ -438,6 +491,7 @@ class DatabaseManager(BirthMarkFunctions):
             session = self.get_session()
             session.add(new_message)
             session.commit()
+            session.close()
             return True
         except:
             return False
@@ -448,15 +502,21 @@ class DatabaseManager(BirthMarkFunctions):
             session = self.get_session()
             session.add(black)
             session.commit()
-            return True
+            session.close()
+            sql = "select * from blacklist where name = '%s' and phone = '%s'" (dt[0], dt[1])
+            if any(self.engine.execute()):
+                return True, "%s has been blacklisted" % dt[0]
+            else:
+                return False, "%s could not be blacklisted" % dt[0]
         except:
-            return False
+            return False, "Could not blacklist this number"
 
     def update_user(self, dt):
         try:
             session = self.get_session()
             session.query(User).filter_by(username=dt[0]).update({dt[1]: dt[2]})
             session.commit()
+            session.close()
             return True
         except:
             return False
@@ -466,6 +526,7 @@ class DatabaseManager(BirthMarkFunctions):
             session = self.get_session()
             session.query(Groups).filter_by(group_name=dt[0]).update({dt[1]: dt[2]})
             session.commit()
+            session.close()
             return True
         except:
             return False
@@ -475,20 +536,30 @@ class DatabaseManager(BirthMarkFunctions):
             session = self.get_session()
             session.query(Member).filter_by(phone=dt[0]).update({dt[1]: dt[2]})
             session.commit()
+            session.close()
             return True
         except:
             return False
 
     def update_message(self, dt):
-        try:
-            session = self.get_session()
-            session.query(Message).filter(and_(
-                Message.message == dt[0],
-                Message.timedate == dt[1])).update({dt[2]: dt[3]})
-            session.commit()
-            return True
-        except:
+        session = self.get_session()
+        if dt[1] == "message":
+            field = Message.message
+        elif dt[1] == "status":
+            field = Message.status
+        else:
+            session.close()
             return False
+        try:
+            session.query(Message).filter(Message.type == dt[0]).update({field: dt[2]})
+            session.commit()
+            status = (True, "Message has been updated")
+            log.info("%s has been updated" % dt[0])
+        except exc.OperationalError, e:
+            status = (False, "Message could not be updated")
+            log.warning("%s could not be updated" % dt[0])
+        session.close()
+        return status
 
     def update_outbox(self, dt):
         session = self.get_session()
@@ -496,6 +567,14 @@ class DatabaseManager(BirthMarkFunctions):
             Outbox.recipient == dt[0],
             Outbox.message == dt[1])).update({Outbox.status: "sent"})
         session.commit()
+        session.close()
+
+    def update_cheque(self, dt):
+        session = self.get_session()
+        session.query(Cheques).filter(Cheques.cheque_number == dt[0]).update(dt[1])
+        session.commit()
+        session.close()
+        return True, "Updated cheque details for cheque no. %s" % str(dt[0])
 
     def get_users(self, who="all"):
         session = self.get_session()
@@ -504,7 +583,6 @@ class DatabaseManager(BirthMarkFunctions):
         else:
             pass
             users = session.query(User)
-        session.commit()
         users_list = []
         for user in users:
             diction = dict()
@@ -514,17 +592,18 @@ class DatabaseManager(BirthMarkFunctions):
             diction['lastname'] = user.lastname
             diction['phone'] = user.phone
             users_list.append(diction)
-            
+        session.commit()
+        session.close()
+
         return users_list
 
     def get_user_details(self, detail_type):
         all_users = {}
         try:
             if detail_type == "users":
-                result = self.engine.execute("SELECT username,firstname,lastname  FROM user")
-                
+                result = self.engine.execute("SELECT username, firstname, lastname  FROM user")
                 for users in result:
-                    all_users[users[0]]="%s %s"%(users[1],users[2])
+                    all_users[users[0]] = "%s %s" % (users[1], users[2])
             elif detail_type == "passwords":
                 result = self.engine.execute("SELECT username,password  FROM user")
                 for users in result:
@@ -553,30 +632,30 @@ class DatabaseManager(BirthMarkFunctions):
         if who == "all":
             members = session.query(Member).all()
         else:
-            return
-        session.commit()
+            members = session.query(Member).filter(Member.group_id == who)
         member_list = []
         groups = self.get_groups()
-        for i in members:
+        for member in members:
             diction = dict()
-            diction['Id_no'] = i.id
-            diction["Name"] = "%s %s"%(i.firstname,i.lastname)
-            diction['Phone'] = i.phone
-            diction['City'] = i.location
-            diction['Address'] = i.address
+            diction['Id_no'] = member.id
+            diction["Name"] = "%s %s" % (member.firstname, member.lastname)
+            diction['Phone'] = member.phone
+            diction['City'] = member.location
+            diction['Address'] = member.address
             for group in groups:
-                if int(group[0]) == int(i.group_id):
+                if int(group[0]) == int(member.group_id):
                        diction['Group'] = group[1]
             member_list.append(diction)
-        
-        return "Clients", "Found %d clients" % len(member_list), member_list
+        session.commit()
+        session.close()
+        return True, "Clients", "Found %d clients" % len(member_list), member_list
 
     def get_messages(self, which="all"):
         session = self.get_session()
         if which == "all":
             messages = session.query(Message).all()
         else:
-            messages = session.query(Message).filter_by(Message.status == which)
+            messages = session.query(Message).filter(Message.type == which)
         msgs = list()
         for msg in messages:
             msg_dict = dict()
@@ -586,7 +665,8 @@ class DatabaseManager(BirthMarkFunctions):
             msg_dict['Message'] = msg.message
             msg_dict['Time'] = msg.timedate
             msgs.append(msg_dict)
-        session.commit()        
+        session.commit()
+        session.close()
         return msgs
 
     def get_bank(self):
@@ -596,6 +676,7 @@ class DatabaseManager(BirthMarkFunctions):
         for bank in banks:
             bank_list.append(bank.bank_name)
         session.commit()
+        session.close()
         return bank_list
 
     def get_payee(self):
@@ -605,6 +686,7 @@ class DatabaseManager(BirthMarkFunctions):
         for payee in payees:
             payee_list.append(payee.payee_name)
         session.commit()
+        session.close()
         return payee_list
 
     def get_schedules(self, which="all"):
@@ -614,7 +696,8 @@ class DatabaseManager(BirthMarkFunctions):
         else:
             pass
             schedules = session.query(Schedule)
-        session.commit()        
+        session.commit()
+        session.close()
         return schedules
 
     def get_config(self, which="all"):
@@ -624,7 +707,8 @@ class DatabaseManager(BirthMarkFunctions):
         else:
             messages = session.query(Config).filter(Config.recipient == which)
             messages = session.query(Config)
-        session.commit()        
+        session.commit()
+        session.close()
         return messages
 
     def get_groups(self, which="all"):
@@ -634,16 +718,18 @@ class DatabaseManager(BirthMarkFunctions):
         else:
             pass
             groups = session.query(Groups)
-        session.commit()
         group_list = []
         for group in groups:            
             group_list.append((group.group_id, group.group_name))
+        session.commit()
+        session.close()
         return group_list
 
     def get_settings(self):
         session = self.get_session()
         settings = session.query(Settings).all()
         session.commit()
+        session.close()
         try:
             settings = settings[-1]
         except:
@@ -661,14 +747,13 @@ class DatabaseManager(BirthMarkFunctions):
         cd["E-mail:"] = settings.email
         cd["apptitle"] = settings.apptitle
         cd["return"] = settings.return_address
-        
         return cd
 
     def get_group_names(self, groups=""):
         names = []
         for group in self.get_groups():
             names.append(group[1])
-        return [True, "Found %d groups" % len(names), names]
+        return names
 
     def get_outbox(self, sieve=False):
         messages = []
@@ -677,7 +762,6 @@ class DatabaseManager(BirthMarkFunctions):
             outbox = session.query(Outbox).filter(Outbox.status == "waiting")
         else:
             outbox = session.query(Outbox).all()        
-        session.commit()        
         for msg in outbox:
             diction = dict()
             diction['name'] = msg.name
@@ -686,6 +770,8 @@ class DatabaseManager(BirthMarkFunctions):
             diction['message'] = msg.message
             diction['date'] = msg.timedate
             messages.append(diction)
+        session.commit()
+        session.close()
         return messages
 
     def get_outbox_similar(self, dt):
@@ -697,11 +783,13 @@ class DatabaseManager(BirthMarkFunctions):
             for msg in outbox:
                 pass
         session.commit()
+        session.close()
     
     def get_blacklist(self):
         session = self.get_session()
         blacklist = session.query(BlackList).all()
         session.commit()
+        session.close()
         black_list = []
         for black in blacklist:            
             diction = dict()
@@ -723,11 +811,11 @@ class DatabaseManager(BirthMarkFunctions):
             cheque_dict['Amount'] = cheque.amount
             cheque_dict['Recpt'] = cheque.insu_recpt
             cheque_dict['Payee'] = cheque.payee
-            cheque_dict['Date'] = cheque.date
+            cheque_dict['Date'] = cheque.date.date()
             cheque_dict['Due'] = cheque.due_date
             cheque_dict['Kbimarecpt'] = cheque.kbima_recpt
             cheque_dict['Kbimarecptno'] = cheque.kbima_recpt_no
-            cheque_dict['Bank'] = cheque.bank
+            cheque_dict['Bank'] = str(cheque.bank).capitalize()
             cheque_dict['Phone'] = cheque.phone
             cheque_list.append(cheque_dict)
         session.close()
@@ -740,7 +828,15 @@ class DatabaseManager(BirthMarkFunctions):
         for cheque in cheques:
             cheque_list.append(cheque.type_name)
         session.commit()
+        session.close()
         return cheque_list
+
+    def delete_user(self, arg):
+        session = self.get_session()
+        session.query(User).filter(User.username == arg).delete()
+        session.commit()
+        session.close()
+        return True
 
     def delete_all(self, what):
         session = self.get_session()        
@@ -759,34 +855,39 @@ class DatabaseManager(BirthMarkFunctions):
         elif what == "banks":
             session.query(Banks).delete()
         session.commit()
+        session.close()
         return
 
     def delete_bank(self, arg):
         session = self.get_session()
         session.query(Banks).filter(Banks.bank_name == arg).delete()
         session.commit()
-        return True
+        session.close()
+        return True, "Bank has been deleted"
 
     def delete_group(self, gname):
         session = self.get_session()
         session.query(Groups).filter(Groups.group_name == gname).delete()
         session.commit()
-        return True
+        return True, "%s has been deleted" % gname
             
-    def delete_member(self, phone):
-        try:
-            session = self.get_session()
-            session.query(Member).filter(Member.phone == phone).delete()
-            session.commit()
-            return True
-        except:
-            return False
+    def delete_group_member(self, phone):
+        session = self.get_session()
+        session.query(Member).filter(Member.phone == phone).delete()
+        session.commit()
+        session.close()
+        query = "select * from member where phone like '%s'" % phone
+        if any(self.engine.execute(query)):
+            return False, "Member could not be deleted"
+        else:
+            return True, "Member has been deleted from the database"
 
     def delete_config(self, name):
         session = self.get_session()
         session.query(Config).filter(Config.msg_type == name).delete()
         session.query(Schedule).filter(Schedule.task == name).delete()
         session.commit()
+        session.close()
         return True
         
     def delete_blacklist(self, phone):
@@ -794,35 +895,50 @@ class DatabaseManager(BirthMarkFunctions):
             session = self.get_session()
             session.query(BlackList).filter(BlackList.phone == phone).delete()
             session.commit()
-            return True
+            session.close()
+            return True, "%phone has been removed from blacklist" % phone
         except:
-            return False
+            return False, "Could not remove %s from blacklist" % phone
 
     def delete_cheque(self, arg):
         session = self.get_session()
         session.query(Cheques).filter(Cheques.cheque_number == arg).delete()
         session.commit()
-        return True
+        session.close()
+        sql = "select * from cheque where cheque_nuber = '%s'" % arg
+        if any(self.engine.execute(sql)):
+            return False, "Could not delete cheque"
+        else:
+            return True, "Cheque has been delete"
 
     def delete_cheque_type(self, arg):
         session = self.get_session()
         session.query(ChequeType).filter(ChequeType.type_name == arg).delete()
         session.commit()
-        return True
+        session.close()
+        sql = "select * from cheque_type where type_name = '%s'" % arg
+        if any(self.engine.execute(sql)):
+            return False, "Cheque Type could not be deleted"
+        else:
+            return True, "%s type has been deleted" % arg
 
     def delete_payee(self, arg):
         session = self.get_session()
         session.query(Payee).filter(Payee.payee_name == arg).delete()
         session.commit()
-        return True
+        session.close()
+        sql = "select * from payee where payee_name = '%s'" % arg
+        if any(self.engine.execute(sql)):
+            return False, "%s could not be deleted" % arg
+        else:
+            return True, "%s has been deleted"
 
     def queries(self, dt):
         if any(self.engine.execute("select * from user where username like 'Admin'")):
             return "Users available"
         else:
             return "Error"
-    def get_appdetails(self):
-        self.get_messages()
+
 
 if __name__ == "__main__":
     db = DatabaseManager()

@@ -119,10 +119,32 @@ class BirthMarkFunctions(object):
         Returns the company details as saved in birthmark database
         """
         conn, cursor = self._connect()
-        clients = []
         sql = "select CompName,Address,Location,Town,Telephone,Mobile,Website,Email,Branches  from Company"
         cursor.execute(sql)
         diction = dict()
         diction["Name"], diction["Address"], diction["Location"], diction["Town"], diction["Telephone"],\
             diction["Mobile"], diction["Website"], diction["Email"], diction["Branches"] = cursor.fetchone()
         return diction
+
+    def get_birthmark_users(self):
+        """
+        Returns the users of the birthmark application
+        """
+        conn, cursor = self._connect()
+        sql = "select Username, FullName,Title,Password from Users"
+        cursor.execute(sql)
+        users = list()
+        for user in cursor.fetchall():
+            diction = dict()
+            try:
+                fname, lname = user[1].split(" ")
+            except ValueError:
+                fname, lname = user[1], ""
+            diction["username"] = user[0]
+            diction["firstname"] = fname
+            diction["lastname"] = lname
+            diction["title"] = user[2]
+            diction["password"] = user[3]
+            users.append(diction)
+        return users
+

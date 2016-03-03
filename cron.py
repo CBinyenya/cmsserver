@@ -12,202 +12,13 @@ import serverManager
 from appmanager import *
 from threading import Thread
 from contextlib import closing
+
 from database import DatabaseManager
 from messenger import Messenger
 from security import Security
+from functions import FileManager
 
 # Setting up important system configurations
-class FileManager(object):
-    """
-    Contains methods responsible for managing the crucial file components of the application
-    This files include:
-    allclients.dat
-    balance.dat
-    extensions.dat
-    expiry.dat
-    config.conf
-    etc.
-    """
-    def __init__(self):
-        self.files = {
-            "clients": "allclients.dat",
-            "balance": "balance.dat",
-            "renewal": "expiry.dat",
-            "newinvoice": "renewal.dat",
-            "extension": "extensions.dat",
-            "birthday": "allclients.dat"
-
-        }
-        self.database = DatabaseManager()
-        self.report_file = "bin/report"
-        self.message_file = "bin/messages"
-        self.config_file = "bin/config.conf"
-        self.folders = ["bin"]
-        self.initializer()
-        self.configarations()
-        self.security = Security()
-        self.user = self.security.user
-        self.password = self.security.password
-        self.dialect = self.security.dialect
-        self.db = self.security.database
-        self.database.connect(dialect=self.dialect, user=self.user, passwd=self.password, database=self.db)
-
-    def initializer(self):
-        for name in self.folders:
-            if not os.path.exists(name):
-                os.mkdir(name)
-        for key, name in self.files.items():
-            name = "bin/" + name
-            if not os.path.exists(name):
-                msg = key + " file missing"
-                self.reporter((False, msg))
-                log.warning(msg)
-            else:
-                msg = key + " file found"
-                self.reporter(("server", msg))
-
-    def configarations(self):
-        """
-         interval is the date differences that the messages should be sent.
-         status determines if the messages are to be sent or not
-         next means the next date general messages have to be sent
-        """
-        config_types = {
-            'clients': {"interval": False, "status": False, "next": False},
-            'balance': {"interval": False, "status": False, "amount": 500},
-            'renewal': {"interval": [15, 5], "status": True},
-            'newinvoice': {"interval": [15, 5], "status": False},
-            'extension': {"interval": [15, 5], "status": False},
-            'birthday': {"status": True},
-            'cheque': {"interval": [15, 5], "status": True},
-            'connection': {'dialect': "mysql", 'database': "bima"},
-        }
-
-
-        if not os.path.exists(self.config_file):
-            with closing(open(self.config_file, "wb")) as fl:
-                Pickle.dump(config_types, fl)
-                log.info("Setting up system configurations")
-        if not os.path.exists(self.message_file):
-            self.initialize_messages()
-
-    def reporter(self, details):
-        """
-        Manages a report file that has details on errors and ho the application
-        executes the most important steps.
-        The details parameter is either a Tuple or a list of Tuples.
-        The tuple has a type of message and the message itself. Error messages
-        are represented by a False object while the rest have there specific names
-        written out.
-        """
-        if not os.path.exists(self.report_file):
-            with open(self.report_file, "wb") as fl:
-                Pickle.dump([], fl)
-        with closing(open(self.report_file, "rb")) as fl:
-            data = Pickle.load(fl)
-        with closing(open(self.report_file, "wb")) as fl:
-            if isinstance(details, tuple):
-                now = time.ctime()
-                type_ = details[0]
-                message = details[1]
-                data.append((now, type_, message))
-            elif isinstance(details, list):
-                for detail in details:
-                    now = time.ctime()
-                    type_ = detail[0]
-                    message = detail
-                    data.append((now, type_, message))
-            Pickle.dump(data, fl)
-
-    def report_reader(self):
-        """Returns the content of the report file which can then be written in a logfile"""
-        if not os.path.exists(self.report_file):
-            return "File does not exist"
-        else:
-            with closing(open(self.report_file, "rb")) as fl:
-                data = Pickle.load(fl)
-        return data
-
-    def initialize_messages(self):
-        """Creates the message file and initializes the default messages in it"""
-        balance = """Dear client,your outstanding insurance premium balance is Ksh $AMOUNT.Kindly
-         send your payments.For enquiries call 0714046604.Thanks for your support."""
-        renewal = """Dear client your $POLICY policy expires on $DATE. Kindly send us the renewal
-         instructions.For enquiries call 0714046604.Thank you"""
-        newinvoice = """Dear client. We have renewed your $POLICY policy. Kindly let us have your
-         payment of Ksh:$AMOUNT.For enquiries call 0714046604. Thank you."""
-        cheque = """Dear client kindly note that your $TYPE cheque no: $NUMBER ( &BANK ) of Ksh $AMOUNT id due for
-         banking on $DUE"""
-        general = ""
-        quick = ""
-        birthday = """Wishing you the very best as you celebrate your big day. Happy Birthday to you
-		from K-BIMA"""
-        default = {
-            "balance": balance,
-            "renewal": renewal,
-            "newinvoice": newinvoice,
-            "general": general,
-            "quicktxt": quick,
-            "birthday": birthday,
-            "cheque": cheque,
-        }
-        with closing(open(self.message_file, "wb")) as fl:
-            Pickle.dump(default, fl)
-            log.info("Setting up default message files and details")
-        log.debug("Setting up message database configurations")
-        for key, value in default.items():
-            data = (key, "server2", False, value, datetime.datetime.today())
-            self._add_message(data)
-
-    def _add_message(self, data):
-        database = DatabaseManager()
-        security = Security()
-        user = security.user
-        password = security.password
-        database.connect(dialect=self.dialect, user=user, passwd=password, database=self.db)
-        database.add_messages(data)
-
-    def read_message(self, type_):
-        """Returns the message of the type given in the parameter"""
-        if not os.path.exists(self.message_file):
-            messages = self.initialize_messages()
-        else:
-            with closing(open(self.message_file)) as fl:
-                messages = Pickle.load(fl)
-        try:
-            message = messages[type_]
-        except KeyError:
-            return False
-        return message
-
-    def change_message(self, type_, message):
-        """Changes the message specified in by the type parameter"""
-        with closing(open(self.message_file, "rb")) as fl:
-            data = Pickle.load(fl)
-        with closing(open(self.message_file, "wb")) as fl:
-            data[type_] = message
-            Pickle.dump(data, fl)
-
-    def read_file(self, name):
-        """Returns the contents of the data files containing the client details eg the balance file"""
-        try:
-            file_name = "bin/" + self.files[name]
-        except KeyError:
-            return False, "Invalid file name request"
-        try:
-            with closing(open(file_name, "rb")) as fl:
-                data = Pickle.load(fl)
-            if isinstance(data, list):
-                return True, data
-            else:
-                print file_name, type(data)
-                return False, "The %s file has been corrupted" % name
-        except EOFError:
-            return False, "The %s file has been corrupted or cannot be found" % name
-        except IOError:
-            return False, "The %s file does not exists" % name
-
-
 class MessageController(FileManager):
     def __init__(self, database_controller):
         FileManager.__init__(self)
@@ -270,6 +81,7 @@ class MessageController(FileManager):
                     if not isinstance(balance, int):
                         return
                 except KeyError:
+                    log.warning("Minimum balance amount is not specified")
                     self.reporter(("Error", "Minimum balance amount is not specified"))
                     return
                 for recipient in message_recipients:
@@ -284,17 +96,18 @@ class MessageController(FileManager):
                         compiled = ([name, phone], t.substitute(values))
                         compiled_list.append(compiled)
 
-            elif message_type == "check":
+            elif message_type == "cheque":
                 for recipient in message_recipients:
-                    due_date, name, amount, phone = recipient['Due'], recipient['Name'],\
+                    due_date, name, amount, phone= recipient['Due'], recipient['Name'],\
                         recipient['Amount'], recipient['Phone']
                     values = dict()
                     values['NAME'] = name
-                    values['DUE'] = due_date
+                    values['DUE'] = due_date.date()
                     values['AMOUNT'] = amount
+                    values['TYPE'] = recipient['Type']
+                    values['NUMBER'] = recipient['Number']
+                    values['BANK'] = recipient['Bank']
                     t = string.Template(message_)
-                    if not isinstance(due_date, datetime):
-                        continue
                     for delta in deltas:
                         if delta.date() == due_date.date() and phone is not None:
                             phone = phone.replace(' ', "")
@@ -313,43 +126,51 @@ class MessageController(FileManager):
             return compiled_list
 
         for key, type_ in self.files.items():
+            print "this is the type %s" % key
             message_type_ = config[key]
             if not message_type_['status']:
-                self.reporter((key, "%s has been disabled"))
+                print "%s has been disabled" % key
+                log.warning("%s has been disabled" % key)
                 continue
-            with closing(open(self.message_file, "rb")) as fl:
-                messages = Pickle.load(fl)
             try:
+                message = [x for x in self.db.get_messages() if x['Type'] == key]
+                message = message[0]['Message']
+                print message
+            except IndexError:
+                with closing(open(self.message_file, "rb")) as fl:
+                    messages = Pickle.load(fl)
                 message = messages[key]
             except KeyError:
-                self.reporter((False, "Controller cannot find %s messages" % key))
+                log.warning("Controller cannot find %s messages" % key)
                 continue
             try:
                 details = config[key]
             except KeyError:
-                self.reporter((False, "Configurations for %s is missing" % key))
+                log.warning("Configurations for %s is missing" % key)
                 continue
             get_recipients = self.read_file(key)
+            if key == "cheque":
+                get_recipients = (True, self.db.get_cheques())
             if get_recipients[0]:
                 recipients = get_recipients[1]
                 msg = "Collecting %s files" % key
                 log.debug(msg)
-                print >>sys.stdout , msg
+                print >>sys.stdout, msg
                 if isinstance(message_creator(key, details, recipients, message), list):
                     complete_list = message_creator(key, details, recipients, message)
+                    for every_msg in complete_list:
+                        inst = PhoneNumber(every_msg[0][1])
+                        phn = inst.list_of_numbers()
+                        if phn:
+                            print [every_msg[0][0], phn[0], "waiting", every_msg[1], self.now]
+                            self.db.add_outbox([every_msg[0][0], phn[0], "waiting", every_msg[1], self.now])
                 else:
                     msg = "Error in collecting %s details" % key
-                    self.reporter(("Error", msg))
                     log.warning(msg)
-                    print >>sys.stdout , msg
+                    print >>sys.stdout, msg
                     continue
-                for every_msg in complete_list:
-                    inst = PhoneNumber(every_msg[0][1])
-                    phn = inst.list_of_numbers()
-                    if phn:
-                        self.db.add_outbox([every_msg[0][0], phn[0], "waiting", every_msg[1], self.now])
             else:
-                print "Cant get recipients for %s" % key
+                log.warning("Cant get recipients for %s" % key)
 
 
 class PhoneNumber(object):
@@ -509,6 +330,7 @@ class Controller(object, Initializer):
         hourly_thread = Thread(target=self.hourly_messenger, name="Hourly Thread")
         daily_thread.start()
         hourly_thread.start()
+
     def message_collector(self):
         self.waiting_messages = list()
         messages = self.db.get_outbox("waiting")
@@ -552,27 +374,36 @@ class Controller(object, Initializer):
 
 
 def collect_data():
+    security = Security()
+    user = security.user
+    passwd = security.password
     seconds = 0
     while True:
         time.sleep(seconds)
-        serverManager.runKlass(("admin", "passwd"))
+        serverManager.runKlass((user, passwd))
         seconds += 60
 
 
 
-def main():
+def main_function():
     FileManager()
     cont = Controller()
     cont.hustler()
     cont.db.add_server_log((cont.now, "Loop 1: Scrapping for messages"))
 
-if __name__ == '__main__':
+
+def main():
     log.info("Starting off the system")
     msg = "Starting off the system"
-    print >>sys.stdout , msg
+    print >>sys.stdout, msg
     thr1 = Thread(target=check_network_connection, name="Network Manager")
-    t = Thread(target=main, name="Main thread")
+    t = Thread(target=main_function, name="Main thread")
 
     thr1.start()
     t.start()
     collect_data()
+
+
+if __name__ == '__main__':
+    main()
+    
