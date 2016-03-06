@@ -11,7 +11,7 @@ from twisted.enterprise import adbapi
 from twisted.protocols import basic
 from twisted.spread import pb
 from twisted.cred import portal, checkers, credentials, error as credError
-from twisted.internet import protocol, reactor, defer
+from twisted.internet import protocol, reactor, defer, threads, task
 from twisted.python import log
 from twisted.python import logfile
 
@@ -535,6 +535,7 @@ def initialize_users(db):
     for user in users:
         db.add_user((user["username"], user["password"], user["firstname"], user["lastname"], ""))
 
+
 def main():
     db_access = DatabaseManager()
     db_access.connect(dialect="mysql", user=security.user, passwd=security.password, database=security.database)
@@ -551,10 +552,11 @@ def main():
     f = logfile.LogFile("tmp\serverLog.log", "", rotateLength=100)
     log.startLogging(f)
     reactor.listenTCP(13333, pb.PBServerFactory(p))
+    data_collector, manager, check_network = Main()
+    task.LoopingCall(manager.collect_data).start(600)
+    task.LoopingCall(manager.daily_messenger).start(86400)
+    task.LoopingCall(manager.hourly_messenger).start(3600)
     reactor.run()
 
-if __name__ == "__main__":        
-    application = Thread(name="SMS Lite Application", target=Main)    
+if __name__ == "__main__":
     main()
-    time.sleep(90)
-    application.start()

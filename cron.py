@@ -135,7 +135,6 @@ class MessageController(FileManager):
             try:
                 message = [x for x in self.db.get_messages() if x['Type'] == key]
                 message = message[0]['Message']
-                print message
             except IndexError:
                 with closing(open(self.message_file, "rb")) as fl:
                     messages = Pickle.load(fl)
@@ -155,14 +154,12 @@ class MessageController(FileManager):
                 recipients = get_recipients[1]
                 msg = "Collecting %s files" % key
                 log.debug(msg)
-                print >>sys.stdout, msg
                 if isinstance(message_creator(key, details, recipients, message), list):
                     complete_list = message_creator(key, details, recipients, message)
                     for every_msg in complete_list:
                         inst = PhoneNumber(every_msg[0][1])
                         phn = inst.list_of_numbers()
                         if phn:
-                            print [every_msg[0][0], phn[0], "waiting", every_msg[1], self.now]
                             self.db.add_outbox([every_msg[0][0], phn[0], "waiting", every_msg[1], self.now])
                 else:
                     msg = "Error in collecting %s details" % key
@@ -288,42 +285,45 @@ class Controller(object, Initializer):
         self.waiting_messages = list()
         Initializer.__init__(self)
 
+    def collect_data(self):
+        collections = {
+            "balance.dat": self.db.clients_with_balance(),
+            "expiry.dat": self.db.clients_with_expiry(),
+            "extensions.dat": self.db.clients_with_extension(),
+            "renewal.dat": self.db.clients_with_renewal(),
+            "allclients.dat": self.db.all_clients(),
+            "newinvoice.dat": self.db.clients_with_renewal()
+        }
+        for name, data in collections.items():
+            file_name = "bin/" + name
+            fl = file(file_name, "wb")
+            Pickle.dump(data, fl)
+            fl.close()
+
     def daily_messenger(self):
         """
                 Manages the application clock
         """
-        seconds = 30
-        while True:
-            time.sleep(seconds)
-            if self.now.hour < 8:
-                hour = (8 - self.now.hour) + 24
-            elif self.now.hour > 8:
-                hour = (24 - self.now.hour)
-            else:
-                hour = 24
-            self.latter = datetime.timedelta(hours=hour) + self.now
-            seconds = hour * 60 * 60
-            self.now = datetime.datetime.now()
-            msg = "Daily Thread initiating messenger"
-            log.info(msg)
-            print >>sys.stdout, msg
-            if self.time_checker():
-                log.debug("Daily Thread system update")
-                message_controller = MessageController(self.db)
-                message_controller.central_command()
-            self.message_sender()
-            with closing(open("bin/details.txt", "w")) as fl:
-                fl.write(time.ctime())
-            
+        time.sleep(30)
+        msg = "Daily Thread initiating messenger"
+        log.info(msg)
+        print >>sys.stdout, msg
+        if self.time_checker():
+            log.debug("Daily Thread system update")
+            message_controller = MessageController(self.db)
+            message_controller.central_command()
+        self.message_sender()
+        with closing(open("bin/details.txt", "w")) as fl:
+            fl.write(time.ctime())
+
     def hourly_messenger(self):
-        while True:
-            time.sleep(3600)
-            collect_data()
-            self.message_collector()
-            msg = "Hourly Thread initiating messenger"
-            log.info(msg)
-            print >>sys.stdout , msg
-            self.message_sender()
+        time.sleep(20)
+        self.collect_data()
+        self.message_collector()
+        msg = "Hourly Thread initiating messenger"
+        log.info(msg)
+        print >>sys.stdout, msg
+        self.message_sender()
 
     def hustler(self):
         daily_thread = Thread(target=self.daily_messenger, name="Daily Thread")
@@ -350,10 +350,8 @@ class Controller(object, Initializer):
         with closing(open("bin/details.txt", "rb")) as fl:
             start_date = fl.readline()
             if start_date[:10] == time.ctime()[:10]:
-                print False, start_date[:10], time.ctime()[:10]
                 return False
             else:
-                print True, start_date[:10], time.ctime()[:10]
                 return True
 
     def message_sender(self):
@@ -377,11 +375,11 @@ def collect_data():
     security = Security()
     user = security.user
     passwd = security.password
-    seconds = 0
-    while True:
-        time.sleep(seconds)
-        serverManager.runKlass((user, passwd))
-        seconds += 60
+    seconds = 10
+    time.sleep(seconds)
+    print >>sys.stdout, "Application collecting data"
+    serverManager.runKlass((user, passwd))
+    seconds += 60
 
 
 
@@ -395,15 +393,10 @@ def main_function():
 def main():
     log.info("Starting off the system")
     msg = "Starting off the system"
+    FileManager()
     print >>sys.stdout, msg
-    thr1 = Thread(target=check_network_connection, name="Network Manager")
-    t = Thread(target=main_function, name="Main thread")
-
-    thr1.start()
-    t.start()
-    collect_data()
-
+    return collect_data, Controller(), check_network_connection,
 
 if __name__ == '__main__':
+    time.sleep(10)
     main()
-    

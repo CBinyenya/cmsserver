@@ -161,6 +161,7 @@ def create_database(con):
         con.execute("CREATE DATABASE bima")
     except ProgrammingError, e:
         pass
+
 def default_user_details():
     path = "bin/read"
     if not os.path.exists(path):
@@ -177,7 +178,7 @@ def default_user_details():
 def create_user(user, password):
     default = default_user_details()
     default_user, defaule_passwd, host = default
-    con = Mysql.connect(host= host, user=default_user, passwd=defaule_passwd, port=3306)
+    con = Mysql.connect(host=host, user=default_user, passwd=defaule_passwd, port=3306)
     cursor = con.cursor()
     query1 = "CREATE USER %s@%s IDENTIFIED BY  '%s' " % (user, host, password)
     query2 = "GRANT ALL ON bima.* TO %s@localhost IDENTIFIED BY '%s'" % (user, password)
@@ -198,7 +199,7 @@ class DatabaseManager(BirthMarkFunctions):
         self.conn = kwargs
         if not kwargs:            
             self.conn = {'dialect': "sqlite",
-                         'database': "databases/dbquicktime.db",
+                         'database': "databases/smslite.db",
                          'user': ""}
         self.user = kwargs['user']
         self.passwd = kwargs['passwd']
@@ -473,8 +474,14 @@ class DatabaseManager(BirthMarkFunctions):
             return False
 
     def add_outbox(self, dt):
+        phn = PhoneNumber(dt[1])
+        phn = phn.list_of_numbers()
+        if phn:
+            phn = phn[0]
+        else:
+            return False, "Invalid phone number for %s" % dt[0]
         try:
-            new_message = Outbox(name=dt[0], recipient=dt[1], status=dt[2], message=dt[3], timedate=dt[4])
+            new_message = Outbox(name=dt[0], recipient=phn, status=dt[2], message=dt[3], timedate=dt[4])
             session = self.get_session()
             session.add(new_message)
             session.commit()
