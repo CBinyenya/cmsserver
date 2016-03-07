@@ -4,23 +4,19 @@ import hashlib
 import cPickle as Pickle
 from contextlib import closing
 from appmanager import log
+from database import DatabaseManager
 
 class Security(object):
     def __init__(self):
-        Security.initialize()
+        self.initialize()
+        self.database_file = "database/smslite.db"
         self.private = "insurance"
         self.data = self.read()
         self.password = self.get_password()
         self.user = self.get_user()
-        self.dialect = self.get_dialect()
         self.database = self.get_database()
 
     def read(self):
-        if not os.path.exists("bin/config.conf"):
-            log.warning("Configuration file missing")
-            from cron import FileManager
-            FileManager()
-
         with closing(open("bin/config.conf", "rb")) as fl:
             self.data = Pickle.load(fl)
             return self.data
@@ -90,14 +86,45 @@ class Security(object):
             log.warning("Database name missing")
             return "bima"
 
-    @staticmethod
-    def initialize():
-        file_name = "bin/read"
-        if not os.path.exists("bin"):
-            os.mkdir("bin")
+    def initialize(self):
+        dirs = ["bin", "database"]
+        for dir_name in dirs:
+            if not os.path.exists(dir_name):
+                os.mkdir(dir_name)
+        file_name = "bin/dialect"
         if not os.path.exists(file_name):
-            with open(file_name, "wb") as fl:
-                fl.writelines(["root\n", "creawib\n", "127.0.0.1\n"])
-                fl.seek(0)
+            if not Security.confirm():
+                fl = file(file_name, "wb")
+                fl.write("sqlite")
+                fl.close()
+                self.dialect = "sqlite"
+            else:
+                with open(file_name, "wb") as fl:
+                    fl.writelines(["root\n", "creawib\n", "127.0.0.1\n"])
+                    fl.seek(0)
+                self.dialect = "mysql"
+        else:
+            fl = file(file_name, "rb")
+            self.dialect = str(fl.readline())
+            fl.close()
 
+    @staticmethod
+    def confirm():
+        import wx
+        app = wx.App(False)
+        dlg = wx.MessageBox("Do you want to use MySQL Database?", "Connection", wx.ICON_INFORMATION | wx.YES_NO)
+        if dlg == wx.YES:
+            return True
+        app.MainLoop()
+        return False
 
+    def database_connection(self):
+        db = DatabaseManager()
+        if self.dialect == "sqlite":
+            if not os.path.exists("database/smslite.db"):
+                fl = file("database/smslite.db", "wb")
+                fl.close()
+            db.connect(user=self.user, passwd=self.password)
+        else:
+            db.connect(dialect="mysql", user=self.user, passwd=self.password, database=self.database)
+        return db

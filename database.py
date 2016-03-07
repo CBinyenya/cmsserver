@@ -5,7 +5,6 @@ from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from birthmark import BirthMarkFunctions
-from security import Security
 import MySQLdb as Mysql
 from MySQLdb import ProgrammingError, OperationalError
 from appmanager import *
@@ -197,13 +196,15 @@ class DatabaseManager(BirthMarkFunctions):
 
     def connect(self, **kwargs):
         self.conn = kwargs
-        if not kwargs:            
-            self.conn = {'dialect': "sqlite",
-                         'database': "databases/smslite.db",
-                         'user': ""}
+        if not 'dialect' in kwargs.keys():
+            self.conn = {
+                'dialect': "sqlite",
+                'database': "database/smslite.db",
+                'user': ""
+            }
         self.user = kwargs['user']
         self.passwd = kwargs['passwd']
-        create_user(self.conn["user"], self.passwd)
+        # create_user(self.conn["user"], self.passwd)
         self.create_database_engine()
         self.create_tables(Base)
 
@@ -215,9 +216,7 @@ class DatabaseManager(BirthMarkFunctions):
             By default the dialect of choice is the sqlite3 connection
         """
 
-        default = {'dialect':"///",
-                   'user': self.user,
-                   'passwd': self.passwd,
+        default = {'dialect': "///",
                    'host': "localhost",
                    'port': "3306",
                    'database': ""
@@ -228,18 +227,18 @@ class DatabaseManager(BirthMarkFunctions):
                     'oracle': ""}
         try:            
             dialect = dialects[self.conn['dialect']]
-            
         except KeyError:
             print >>sys.stdout, "Switching to default dialect (sqlite3)"
             dialect = self.conn['dialect'] = "sqlite"
-            
+
         default.update(self.conn)
-        self.conn = default        
-        passwd, host, port = self.conn['passwd'], self.conn['host'], self.conn['port']
+        self.conn = default
         if self.conn['dialect'] == "sqlite":            
-            string1 = "sqlite:///%s"%self.conn['database']
+            string1 = "sqlite:///%s" % self.conn['database']
             self.engine = create_engine(string1)
             return self.engine
+
+        passwd, host, port = self.conn['passwd'], self.conn['host'], self.conn['port']
         string1 = r"%s://%s"%(dialect,self.conn['user'])    
         if self.conn['database']:
             database = "/" + self.conn['database']
@@ -771,10 +770,10 @@ class DatabaseManager(BirthMarkFunctions):
             outbox = session.query(Outbox).all()        
         for msg in outbox:
             diction = dict()
-            diction['name'] = msg.name
-            diction['phone'] = msg.recipient
-            diction['status'] = msg.status
-            diction['message'] = msg.message
+            diction['name'] = str(msg.name)
+            diction['phone'] = str(msg.recipient)
+            diction['status'] = str(msg.status)
+            diction['message'] = str(msg.message)
             diction['date'] = msg.timedate
             messages.append(diction)
         session.commit()
@@ -948,8 +947,4 @@ class DatabaseManager(BirthMarkFunctions):
 
 
 if __name__ == "__main__":
-    db = DatabaseManager()
-    sec = Security()
-    username = sec.user
-    password = sec.password
-    db.connect(dialect="mysql", user=username, passwd=password, database="bima")
+    pass

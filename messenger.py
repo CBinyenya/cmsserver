@@ -77,9 +77,9 @@ class Messenger(object):
                 recipients, message = phn, number[1]
                 sender = SmsLeopard(recipients, message)
                 response = sender.send_message()
+                print >>sys.stdout, response
 
-                if isinstance(response, list):
-                    print "confirmed tuple messages"
+                if isinstance(response, list):                    
                     if response[0][1] == "Success":
                         numbers.remove(number)
                         sent.append(number)

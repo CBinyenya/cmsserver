@@ -13,7 +13,6 @@ from appmanager import *
 from threading import Thread
 from contextlib import closing
 
-from database import DatabaseManager
 from messenger import Messenger
 from security import Security
 from functions import FileManager
@@ -275,13 +274,12 @@ class Controller(object, Initializer):
     def __init__(self):
         self.now = datetime.datetime.today()
         self.latter = datetime.timedelta(hours=24) + self.now
-        self.db = DatabaseManager()
         self.sec = Security()
         self.user = self.sec.user
         self.password = self.sec.password
         self.dialect = self.sec.dialect
         self.database = self.sec.database
-        self.db.connect(dialect=self.dialect, user=self.user, passwd=self.password, database=self.database)
+        self.db = self.sec.database_connection()
         self.waiting_messages = list()
         Initializer.__init__(self)
 

@@ -8,21 +8,13 @@ from time import strftime, strptime, ctime
 import cPickle as Pickle
 from contextlib import closing
 
-
-from database import DatabaseManager
 from messenger import Messenger
 from security import Security
 from appmanager import *
 
 def db_manager():
-    db = DatabaseManager()
     sec = Security()
-    dialect = sec.dialect
-    user = sec.user
-    password = sec.password
-    database = sec.database
-    db.connect(dialect=dialect, user=user, passwd=password, database=database)
-    return db
+    return sec.database_connection()
 
 
 def message_collector():
@@ -30,20 +22,15 @@ def message_collector():
         messages = db_manager().get_outbox("waiting")
         if isinstance(messages, list) and messages:
             for message in messages:
-                inst = PhoneNumber(message["phone"])
-                phn = inst.list_of_numbers()
-                if phn:
-                    message_tuple = (message["phone"], message["message"])
-                else:
-                    continue
+                message_tuple = (message["phone"], message["message"])
                 waiting_messages.append(message_tuple)
         return waiting_messages
 
 def message_sender():
         waiting_messages = message_collector()
-        msg = "%d messages waiting to be sent" % len(waiting_messages)
+        msg = repr(waiting_messages) #"%d messages waiting to be sent" % len(waiting_messages)
+        print >> sys.stdout, waiting_messages
         log.info(msg)
-        print >>sys.stdout, msg
         sent_list = []
         for message in waiting_messages:
             sender = Messenger([message])
@@ -78,7 +65,6 @@ class FileManager(object):
             "cheque": "",
 
         }
-        self.database = DatabaseManager()
         self.report_file = "bin/report"
         self.message_file = "bin/messages"
         self.config_file = "bin/config.conf"
@@ -90,7 +76,10 @@ class FileManager(object):
         self.password = self.security.password
         self.dialect = self.security.dialect
         self.db = self.security.database
-        self.database.connect(dialect=self.dialect, user=self.user, passwd=self.password, database=self.db)
+        self.database = self.security.database_connection()
+        if not os.path.exists(self.message_file):
+            self.initialize_messages()
+
 
     def initializer(self):
         for name in self.folders:
@@ -115,11 +104,11 @@ class FileManager(object):
         config_types = {
             'clients': {"interval": False, "status": False, "next": False},
             'balance': {"interval": False, "status": False, "min": 500, "max": 1000000},
-            'renewal': {"interval": [15, 5], "status": True},
+            'renewal': {"interval": [15, 5], "status": False},
             'newinvoice': {"interval": [15, 5], "status": False, "min": 500, "max": 1000000},
             'extension': {"interval": [15, 5], "status": False},
-            'birthday': {"status": True},
-            'cheque': {"interval": [2, 0], "status": True},
+            'birthday': {"status": False},
+            'cheque': {"interval": [2, 0], "status": False},
             'connection': {'dialect': "mysql", 'database': "bima"},
         }
 
@@ -127,8 +116,6 @@ class FileManager(object):
             with closing(open(self.config_file, "wb")) as fl:
                 Pickle.dump(config_types, fl)
                 log.info("Setting up system configurations")
-        if not os.path.exists(self.message_file):
-            self.initialize_messages()
 
     def reporter(self, details):
         """
@@ -203,14 +190,7 @@ class FileManager(object):
             self._add_message(data)
 
     def _add_message(self, data):
-        database = DatabaseManager()
-        security = Security()
-        user = security.user
-        password = security.password
-        dialect = security.dialect
-        db = security.database
-        database.connect(dialect=dialect, user=user, passwd=password, database=db)
-        database.add_messages(data)
+        self.database.add_messages(data)
 
     def read_message(self, type_):
         """Returns the message of the type given in the parameter"""

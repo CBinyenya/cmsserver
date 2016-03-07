@@ -1,10 +1,8 @@
 __author__ = 'Monte'
 import os
 import sys
-import time
 import cPickle as Pickle
 from contextlib import closing
-from threading import Thread
 from zope.interface import Interface, implements
 from twisted.cred.checkers import ANONYMOUS, AllowAnonymousAccess
 from twisted.enterprise import adbapi
@@ -17,8 +15,11 @@ from twisted.python import logfile
 
 from cron import main as Main
 from security import Security
-from database import DatabaseManager
 from functions import FileManager, message_sender
+
+if not os.path.exists("bin/config.conf"):
+    FileManager()
+
 
 DB_DRIVER = "MySQLdb"
 
@@ -537,10 +538,12 @@ def initialize_users(db):
 
 
 def main():
-    db_access = DatabaseManager()
-    db_access.connect(dialect="mysql", user=security.user, passwd=security.password, database=security.database)
+    db_access = security.database_connection()
     initialize_users(db_access)
-    connection = adbapi.ConnectionPool(DB_DRIVER, **DB_ARGS)
+    if security.dialect == "mysql":
+        connection = adbapi.ConnectionPool(DB_DRIVER, **DB_ARGS)
+    else:
+        connection = adbapi.ConnectionPool("sqlite3", security.database_file)
     users = db_access.get_user_details("users")
     passwords = db_access.get_user_details("passwords")
     p = portal.Portal(ClassRealm(ServerFunctions(users, passwords, db_access), connection))
