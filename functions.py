@@ -28,7 +28,7 @@ def message_collector():
 
 def message_sender():
         waiting_messages = message_collector()
-        msg = repr(waiting_messages) #"%d messages waiting to be sent" % len(waiting_messages)
+        msg = waiting_messages #"%d messages waiting to be sent" % len(waiting_messages)
         print >> sys.stdout, waiting_messages
         log.info(msg)
         sent_list = []
@@ -41,7 +41,9 @@ def message_sender():
         log.info(msg)
         for sent in sent_list:
             db_manager().update_outbox(sent)
-        return True, msg
+        if sent:
+            return True, msg
+        return False, "Message(s) could not be sent "
 
 class FileManager(object):
     """
