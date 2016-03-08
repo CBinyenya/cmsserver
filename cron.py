@@ -79,7 +79,6 @@ class MessageController(FileManager):
                             compiled_list.append(compiled)
 
             elif message_type == "newinvoice":
-                min_invoice_number = 0
                 max_invoice_number = None
                 if "from" in message_details.keys() and "to" in message_details.keys():
                     if "from" not in message_details.keys():
@@ -87,6 +86,7 @@ class MessageController(FileManager):
                         return
                     else:
                         min_invoice_number = int(message_details["from"])
+                        print "New minimum invoice", min_invoice_number
                     try:
                         max_invoice_number = int(message_details["to"])
                     except KeyError:
@@ -111,11 +111,11 @@ class MessageController(FileManager):
                             recipient['Amount'], int(recipient['TransNo'])
                     except ValueError:
                         continue
-                    if min_invoice_number > invoice_number:
+                    if min_invoice_number > invoice_number or min_invoice_number == invoice_number:
                         print min_invoice_number, ">",  invoice_number
+                        continue
                     else:
                         print invoice_number, "<", min_invoice_number
-                        continue
                     if max_invoice_number:
                         if invoice_number < max_invoice_number:
                             pass
@@ -127,7 +127,7 @@ class MessageController(FileManager):
                     values['POLICY'] = policy
                     values['AMOUNT'] = insert_comma(amount)
                     t = string.Template(message_)
-                    if max_bal > int(amount) > min_bal and phone is not None:
+                    if max_bal > int(amount) > (min_bal - 1) and phone is not None:
                         phone = phone.replace(' ', "")
                         compiled = ([name, phone], t.substitute(values))
                         compiled_list.append(compiled)
@@ -153,7 +153,7 @@ class MessageController(FileManager):
                     values = dict()
                     values['AMOUNT'] = insert_comma(amount)
                     t = string.Template(message_)
-                    if int(amount) > min_bal and max_bal < int(amount) and phone is not None:
+                    if max_bal > int(amount) > (min_bal - 1) and phone is not None:
                         phone = phone.replace(' ', "")
                         compiled = ([name, phone], t.substitute(values))
                         compiled_list.append(compiled)
