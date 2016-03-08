@@ -12,7 +12,7 @@ options = {
     }
 }
 
-setup(name="SMSLite Server",
+setup(name="SMSLite Server Beta",
       version="1.4",
       description="SMSLite Server Application",
       options=options,
