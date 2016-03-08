@@ -61,6 +61,7 @@ class MessageController(FileManager):
 
             elif message_type == "newinvoice":
                 min_invoice_number = 0
+                max_invoice_number = None
                 if "from" in message_details.keys() and "to" in message_details.keys():
                     if "from" not in message_details.keys():
                         log.warning("Invoice number has not been set")
