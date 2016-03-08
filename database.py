@@ -68,8 +68,8 @@ class Member(Base):
     id = Column(Integer, primary_key=True)
     firstname = Column(String(20), nullable=False)
     lastname = Column(String(20))    
-    phone = Column(String(13),nullable=False)
-    location =  Column(String(50))
+    phone = Column(String(13), nullable=False)
+    location = Column(String(50))
     address = Column(String(20))
     group_id = Column(Integer, ForeignKey('groups.group_id'))
 

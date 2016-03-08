@@ -122,7 +122,7 @@ class MessageController(FileManager):
                     amount = math.ceil(amount*100)/100
                     values = dict()
                     values['POLICY'] = policy
-                    values['AMOUNT'] = amount
+                    values['AMOUNT'] = insert_comma(amount)
                     t = string.Template(message_)
                     if max_bal > int(amount) > min_bal and phone is not None:
                         phone = phone.replace(' ', "")
@@ -146,10 +146,9 @@ class MessageController(FileManager):
                     max_bal = 1000000
                 for recipient in message_recipients:
                     phone, amount = recipient['Phone'], recipient['Amount']
-                    amount = math.ceil(amount*100)/100
                     name = recipient['Name']
                     values = dict()
-                    values['AMOUNT'] = amount
+                    values['AMOUNT'] = insert_comma(amount)
                     t = string.Template(message_)
                     if int(amount) > min_bal and max_bal < int(amount) and phone is not None:
                         phone = phone.replace(' ', "")
@@ -163,7 +162,7 @@ class MessageController(FileManager):
                     values = dict()
                     values['NAME'] = name
                     values['DUE'] = due_date.date()
-                    values['AMOUNT'] = amount
+                    values['AMOUNT'] = insert_comma(amount)
                     values['TYPE'] = recipient['Type']
                     values['NUMBER'] = recipient['Number']
                     values['BANK'] = recipient['Bank']
