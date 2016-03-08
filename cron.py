@@ -28,7 +28,6 @@ class MessageController(FileManager):
         with closing(open(self.config_file, "rb")) as fl:
             config = Pickle.load(fl)
 
-        @staticmethod
         def insert_comma(arg):
             if isinstance(arg, float):
                 arg = int(round(arg))
@@ -107,11 +106,15 @@ class MessageController(FileManager):
                     log.warning("Maximum balance is not specified")
                     max_bal = 1000000
                 for recipient in message_recipients:
-                    phone, policy, amount, invoice_number = recipient['Phone'], recipient['Policy'],\
-                        recipient['Amount'], recipient['TransNo']
-                    if invoice_number > min_invoice_number:
-                        pass
+                    try:
+                        phone, policy, amount, invoice_number = recipient['Phone'], recipient['Policy'],\
+                            recipient['Amount'], int(recipient['TransNo'])
+                    except ValueError:
+                        continue
+                    if min_invoice_number > invoice_number:
+                        print min_invoice_number, ">",  invoice_number
                     else:
+                        print invoice_number, "<", min_invoice_number
                         continue
                     if max_invoice_number:
                         if invoice_number < max_invoice_number:
