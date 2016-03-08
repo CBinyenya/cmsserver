@@ -105,9 +105,9 @@ class FileManager(object):
         """
         config_types = {
             'clients': {"interval": False, "status": False, "next": False},
-            'balance': {"interval": False, "status": False, "min": 500, "max": 1000000},
+            'balance': {"interval": False, "status": True, "min": 500, "max": 1000000},
             'renewal': {"interval": [15, 5], "status": False},
-            'newinvoice': {"interval": [15, 5], "status": False, "min": 500, "max": 1000000},
+            'newinvoice': {"interval": [15, 5], "status": True, "min": 500, "max": 1000000, "from": 400},
             'extension': {"interval": [15, 5], "status": False},
             'birthday': {"status": False},
             'cheque': {"interval": [2, 0], "status": False},

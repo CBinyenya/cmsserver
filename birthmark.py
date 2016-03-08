@@ -45,7 +45,12 @@ class BirthMarkFunctions(object):
 
         conn, cursor = self._connect()
         clients = []
-        cursor.execute("SELECT c.ClientID as ClientID,c.[Name] as Client_Name,c.Town as locatio,c.Occupation as occupation,c.Address as Address,c.Domant as Domant, dm.TransNo AS Invoice_Number, c.Mobile as Phone_Number , Policies.[Name] AS Risk, dv.RegNo AS Insured_Policy, dm.DuePremium AS Amount, dm.Business AS Policy_Status FROM  (((DebitMaster dm LEFT OUTER JOIN Clients C ON C.ClientID = dm.ClientID) LEFT OUTER JOIN DebitVehicles dv ON dm.TransNo = dv.DebitNoteNo) LEFT OUTER JOIN Policies ON Policies.ClassID & Policies.Policycode = dm.ClassCode) ")        
+        cursor.execute("""SELECT c.ClientID as ClientID,c.[Name] as Client_Name,c.Town as locatio,c.Occupation as
+        occupation,c.Address as Address,c.Domant as Domant, dm.TransNo AS Invoice_Number, c.Mobile as Phone_Number ,
+         Policies.[Name] AS Risk, dv.RegNo AS Insured_Policy, dm.DuePremium AS Amount, dm.Business AS Policy_Status
+          FROM  (((DebitMaster dm LEFT OUTER JOIN Clients C ON C.ClientID = dm.ClientID) LEFT OUTER JOIN DebitVehicles
+           dv ON dm.TransNo = dv.DebitNoteNo) LEFT OUTER JOIN Policies ON Policies.ClassID & Policies.Policycode =
+           dm.ClassCode) """)
         try:
             for i in cursor.fetchall():
                 if i[9]:                    

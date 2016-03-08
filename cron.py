@@ -60,29 +60,70 @@ class MessageController(FileManager):
                             compiled_list.append(compiled)
 
             elif message_type == "newinvoice":
+                min_invoice_number = 0
+                if "from" in message_details.keys() and "to" in message_details.keys():
+                    if "from" not in message_details.keys():
+                        log.warning("Invoice number has not been set")
+                        return
+                    else:
+                        min_invoice_number = int(message_details["from"])
+                    try:
+                        max_invoice_number = int(message_details["to"])
+                    except KeyError:
+                        log.debug("'To' invoice number has not been set")
+                try:
+                    min_bal = message_details["min"]
+                    if not isinstance(min_bal, int):
+                        return
+                except KeyError:
+                    log.warning("Using Ksh 500 default balance minimum amount ")
+                    min_bal = 500
+                try:
+                    max_bal = message_details["max"]
+                    if not isinstance(max_bal, int):
+                        return
+                except KeyError:
+                    log.warning("Maximum balance is not specified")
+                    max_bal = 1000000
                 for recipient in message_recipients:
-                    phone, policy, amount = recipient['Phone'], recipient['Policy'],\
-                        recipient['Amount']
+                    phone, policy, amount, invoice_number = recipient['Phone'], recipient['Policy'],\
+                        recipient['Amount'], recipient['TransNo']
+                    if invoice_number > min_invoice_number:
+                        pass
+                    else:
+                        continue
+                    if max_invoice_number:
+                        if invoice_number < max_invoice_number:
+                            pass
+                        else:
+                            continue
                     name = recipient['Name']
                     amount = math.ceil(amount*100)/100
                     values = dict()
                     values['POLICY'] = policy
                     values['AMOUNT'] = amount
                     t = string.Template(message_)
-                    if phone is not None:
+                    if int(amount) > min_bal and max_bal < int(amount) and phone is not None:
                         phone = phone.replace(' ', "")
                         compiled = ([name, phone], t.substitute(values))
                         compiled_list.append(compiled)
 
+
             elif message_type == "balance":
                 try:
-                    balance = message_details["amount"]
-                    if not isinstance(balance, int):
+                    min_bal = message_details["min"]
+                    if not isinstance(min_bal, int):
                         return
                 except KeyError:
-                    log.warning("Minimum balance amount is not specified")
-                    self.reporter(("Error", "Minimum balance amount is not specified"))
-                    return
+                    log.warning("Using Ksh 500 default balance minimum amount ")
+                    min_bal = 500
+                try:
+                    max_bal = message_details["max"]
+                    if not isinstance(max_bal, int):
+                        return
+                except KeyError:
+                    log.warning("Maximum balance is not specified")
+                    max_bal = 1000000
                 for recipient in message_recipients:
                     phone, amount = recipient['Phone'], recipient['Amount']
                     amount = math.ceil(amount*100)/100
@@ -90,7 +131,7 @@ class MessageController(FileManager):
                     values = dict()
                     values['AMOUNT'] = amount
                     t = string.Template(message_)
-                    if int(amount) > balance and phone is not None:
+                    if int(amount) > min_bal and max_bal < int(amount) and phone is not None:
                         phone = phone.replace(' ', "")
                         compiled = ([name, phone], t.substitute(values))
                         compiled_list.append(compiled)
