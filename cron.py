@@ -28,6 +28,26 @@ class MessageController(FileManager):
         with closing(open(self.config_file, "rb")) as fl:
             config = Pickle.load(fl)
 
+        @staticmethod
+        def insert_comma(arg):
+            if isinstance(arg, float):
+                arg = int(round(arg))
+            arg = str(arg)
+            counter = 0
+            new_string = ""
+            for number in enumerate(arg):
+                if counter in [3, 6, 9, 12, 15]:
+                    if len(arg) > counter:
+                        value = "," + arg[-(number[0] + 1)]
+                    else:
+                        value = ""
+                    counter = 1
+                else:
+                    value = arg[-(number[0] + 1)]
+                    counter += 1
+                new_string += value
+            return "".join(reversed(str(new_string)))
+
         def message_creator(message_type, message_details, message_recipients, message_):
             deltas = list()
             try:
@@ -104,11 +124,10 @@ class MessageController(FileManager):
                     values['POLICY'] = policy
                     values['AMOUNT'] = amount
                     t = string.Template(message_)
-                    if int(amount) > min_bal and max_bal < int(amount) and phone is not None:
+                    if max_bal > int(amount) > min_bal and phone is not None:
                         phone = phone.replace(' ', "")
                         compiled = ([name, phone], t.substitute(values))
                         compiled_list.append(compiled)
-
 
             elif message_type == "balance":
                 try:
@@ -139,7 +158,7 @@ class MessageController(FileManager):
 
             elif message_type == "cheque":
                 for recipient in message_recipients:
-                    due_date, name, amount, phone= recipient['Due'], recipient['Name'],\
+                    due_date, name, amount, phone = recipient['Due'], recipient['Name'],\
                         recipient['Amount'], recipient['Phone']
                     values = dict()
                     values['NAME'] = name
