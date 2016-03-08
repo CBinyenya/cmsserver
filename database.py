@@ -4,6 +4,7 @@ from sqlalchemy import and_, create_engine, Column, Integer, DateTime, String, T
 from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.exc import OperationalError
 from birthmark import BirthMarkFunctions
 import MySQLdb as Mysql
 from MySQLdb import ProgrammingError, OperationalError
@@ -270,7 +271,11 @@ class DatabaseManager(BirthMarkFunctions):
 
     def create_tables(self, base):
         Base = base
-        Base.metadata.create_all(self.engine)
+        try:
+            Base.metadata.create_all(self.engine)
+        except OperationalError:
+            log.warning("MySQL database cannot be found!")
+            sys.exit()
         if any(self.engine.execute("select * from user where username like 'Admin'")):
             return "Users available"
         else:
