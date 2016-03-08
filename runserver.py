@@ -105,6 +105,14 @@ class ServerFunctions:
         print >>sys.stderr, "Server responding to request"
         return response
 
+    def check_balance(self):
+        flm = FileManager()
+        response = flm.get_config("at")['balance']
+        if response:
+            return True, "You have a balance of Ksh %d" % response
+        else:
+            return False, "Contact admin for help"
+
     def get_group_members(self, name):
         data = self.db_manager.get_group_members(name)
         print >>sys.stderr, "Server responding to request with %d group clients" % len(data)
@@ -321,6 +329,10 @@ class UserPerspective(pb.Avatar):
     def perspective_get_group_members(self, details):
         """perspective to return all group clients"""
         return self.todoList.get_group_members(details)
+
+    def perspective_check_balance(self):
+        """perspective to return account balance"""
+        return self.todoList.check_balance()
 
     def perspective_addGroup(self,details):
         print ("""perspective to add new group """)

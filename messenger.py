@@ -4,6 +4,7 @@ import urllib2
 import json
 import cPickle as Pickle
 from contextlib import closing
+from appmanager import log
 
 
 class Messenger(object):
@@ -11,38 +12,26 @@ class Messenger(object):
         self.list = content
         self.kwd = kwd
 
-    def check_config(self, protocol):
+    def check_config(self):
         """Configures the username, key and port numbers"""
-        def read():
-            try:
-                with closing(open("bin/conf", "rb")) as fl:
-                    data = Pickle.load(fl)
-                return data[protocol]
-            except IOError:
-                details = {
-                    "smsleopard": (u'kbmainspire', u'25d2de9be8879140f495ec80e4d042fa5a53b2f7dd1f3c940ab6c00d26505b0c',
-                                   u'K-BIMA')
-                }
-                with closing(open("bin/conf", "wb")) as fl:
-                    Pickle.dump(details, fl)
-                return details
 
-        def write(dict1):
-            dict2 = read()
-            dict2.update(dict1)
-            with closing(open("bin/conf", "wb")) as fl:
-                Pickle.dump(dict2, fl)
         try:
-            if not read():
-                raise KeyError
-        except KeyError:
-            get = raw_input("Do you want to configure %s? ('y' for yes and 'n' for no)" % protocol)
-            if get == "y":
-                name = raw_input("Enter your username:\t")
-                key = raw_input("Enter your key or port number:\t")
-                sender_id = raw_input("Enter the Sender ID")
-                dictio = {protocol: (name, key, sender_id)}
-                write(dictio)
+            with closing(open("bin/config.conf", "rb")) as fl:
+                data = Pickle.load(fl)
+            return data['at']
+        except (IOError, KeyError):
+            log.warning("Africastalking configurations missing")
+            details = {
+                "username": u'kbmainspire',
+                "apikey": u'25d2de9be8879140f495ec80e4d042fa5a53b2f7dd1f3c940ab6c00d26505b0c',
+                "senderid": u'APPLESOFT'
+            }
+            with closing(open("bin/config.conf", "wb")) as fl:
+                Pickle.dump(details, fl)
+            return details
+
+    def update_balance(self, amount):
+        self.check_config()
 
     def send_bulksms(self):
         """Sending a general message to recipients in the list"""        
@@ -107,15 +96,18 @@ class SmsLeopard(object):
         if not self.get_data():
             print >>sys.stderr, "Smsleopard is not configured,username & apikey are missing"
             return False
-        self.username, self.apikey, self.sender_id = self.get_data()
+        details = self.get_data()
+        self.username = details["username"]
+        self.apikey = details["apikey"]
+        self.sender_id = details["senderid"]
         return True
         
     def get_data(self):
         """ Gets the username and apikey from the file config """
         try:
-            with closing(open("bin/conf", "rb")) as fl:
+            with closing(open("bin/config.conf", "rb")) as fl:
                 data = Pickle.load(fl)
-                return data["smsleopard"]
+                return data["at"]
         except IOError:
             return
 

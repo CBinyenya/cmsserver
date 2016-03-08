@@ -1,4 +1,2 @@
-from security import Security
-security = Security()
-print security.database_connection()
-print security.dialect
+from functions import FileManager
+print FileManager().get_config("at")['balance']

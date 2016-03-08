@@ -19,6 +19,7 @@ def db_manager():
 
 def message_collector():
         waiting_messages = list()
+
         messages = db_manager().get_outbox("waiting")
         if isinstance(messages, list) and messages:
             for message in messages:
@@ -27,23 +28,29 @@ def message_collector():
         return waiting_messages
 
 def message_sender():
-        waiting_messages = message_collector()
-        msg = waiting_messages #"%d messages waiting to be sent" % len(waiting_messages)
-        print >> sys.stdout, waiting_messages
-        log.info(msg)
-        sent_list = []
-        for message in waiting_messages:
-            sender = Messenger([message])
-            sender.check_config("smsleopard")
-            sent_msg = sender.send_sms()[0]
-            sent_list.extend(sent_msg)
-        msg = "%d sent messages" % len(sent_list)
-        log.info(msg)
-        for sent in sent_list:
-            db_manager().update_outbox(sent)
-        if sent:
-            return True, msg
-        return False, "Message(s) could not be sent "
+    flm = FileManager()
+    balance = flm.get_config("at")['balance']
+    waiting_messages = message_collector()
+    msg = waiting_messages #"%d messages waiting to be sent" % len(waiting_messages)
+    print >> sys.stdout, waiting_messages
+    log.info(msg)
+    sent_list = []
+    for message in waiting_messages:
+        sender = Messenger([message])
+        sender.check_config()
+        sent_msg = sender.send_sms()[0]
+        sent_list.extend(sent_msg)
+    msg = "%d sent messages" % len(sent_list)
+    log.info(msg)
+    counter = 0
+    for sent in sent_list:
+        counter += 1
+        db_manager().update_outbox(sent)
+    if sent_list:
+        balance = balance - counter
+        flm.change_config(("at", "balance", balance))
+        return True, msg
+    return False, "%d Message(s) could not be sent " % len(waiting_messages)
 
 class FileManager(object):
     """
@@ -105,13 +112,19 @@ class FileManager(object):
         """
         config_types = {
             'clients': {"interval": False, "status": False, "next": False},
-            'balance': {"interval": False, "status": True, "min": 500, "max": 1000000},
+            'balance': {"interval": [1], "status": True, "min": 500, "max": 1000000},
             'renewal': {"interval": [15, 5], "status": False},
             'newinvoice': {"interval": [15, 5], "status": True, "min": 500, "max": 1000000, "from": 6300, "to": 0},
             'extension': {"interval": [15, 5], "status": False},
             'birthday': {"status": False},
             'cheque': {"interval": [2, 0], "status": False},
             'connection': {'dialect': "mysql", 'database': "bima"},
+            'at': {
+                'balance': 2000,
+                'senderid': "K-BIMA",
+                "username": u'kbmainspire',
+                "apikey": u'25d2de9be8879140f495ec80e4d042fa5a53b2f7dd1f3c940ab6c00d26505b0c',
+            }
         }
 
         if not os.path.exists(self.config_file):
@@ -236,8 +249,18 @@ class FileManager(object):
                 return True, "Messaging frequency for %s has been turned of! Please use the drop down choices to \
                              activate the specific frequency" % type_
             return True, "Messaging frequency for %s has been updated to after %s days" % (type_, repr(update))
+        elif details == "from":
+            return True, "Invoice number has been set from %d" % update
+
         else:
             return True, " %s configurations for %s has been updated" % (details, type_)
+
+    def get_config(self, _type):
+        fl = file(self.config_file, "rb")
+        data = Pickle.load(fl)
+        if _type in data.keys():
+            return data[_type]
+        return False
 
     def read_file(self, name):
         """Returns the contents of the data files containing the client details eg the balance file"""

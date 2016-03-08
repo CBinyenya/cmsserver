@@ -22,6 +22,9 @@ class MessageController(FileManager):
     def __init__(self, database_controller):
         FileManager.__init__(self)
         self.now = datetime.datetime.now()
+        self.month = self.now.month
+        self.day = self.now.day
+        self.year = self.now.year
         self.db = database_controller
 
     def central_command(self):
@@ -29,8 +32,14 @@ class MessageController(FileManager):
             config = Pickle.load(fl)
 
         def insert_comma(arg):
+            try:
+                arg = float(arg)
+            except ValueError:
+                return
             if isinstance(arg, float):
                 arg = int(round(arg))
+            if isinstance(arg, str):
+                arg = int(round(float(arg)))
             arg = str(arg)
             counter = 0
             new_string = ""
@@ -57,9 +66,16 @@ class MessageController(FileManager):
                 for days in interval:
                     if not isinstance(days, int):
                         continue
-                    time_delta = datetime.timedelta(days=days)
-                    delta = self.now + time_delta
-                    deltas.append(delta)
+                    if message_type == "balance":
+                        try:
+                            time_delta = datetime.datetime(self.year, self.month, days)
+                            deltas.append(time_delta)
+                        except ValueError:
+                            continue
+                    else:
+                        time_delta = datetime.timedelta(days=days)
+                        delta = self.now + time_delta
+                        deltas.append(delta)
             compiled_list = list()
             if message_type == "renewal":
                 for recipient in message_recipients:
@@ -79,6 +95,7 @@ class MessageController(FileManager):
                             compiled_list.append(compiled)
 
             elif message_type == "newinvoice":
+                min_invoice_number = 0
                 max_invoice_number = None
                 if "from" in message_details.keys() and "to" in message_details.keys():
                     if "from" not in message_details.keys():
@@ -105,6 +122,7 @@ class MessageController(FileManager):
                 except KeyError:
                     log.warning("Maximum balance is not specified")
                     max_bal = 1000000
+                new_invoice = min_invoice_number
                 for recipient in message_recipients:
                     try:
                         phone, policy, amount, invoice_number = recipient['Phone'], recipient['Policy'],\
@@ -112,10 +130,13 @@ class MessageController(FileManager):
                     except ValueError:
                         continue
                     if min_invoice_number > invoice_number or min_invoice_number == invoice_number:
-                        print min_invoice_number, ">",  invoice_number
+                        if not min_invoice_number:
+                            return
                         continue
                     else:
-                        print invoice_number, "<", min_invoice_number
+                        if invoice_number > new_invoice:
+                            new_invoice = invoice_number
+                        pass
                     if max_invoice_number:
                         if invoice_number < max_invoice_number:
                             pass
@@ -131,6 +152,7 @@ class MessageController(FileManager):
                         phone = phone.replace(' ', "")
                         compiled = ([name, phone], t.substitute(values))
                         compiled_list.append(compiled)
+                    log.debug(self.change_config(("newinvoice", "from", new_invoice)))
 
             elif message_type == "balance":
                 try:
@@ -153,10 +175,15 @@ class MessageController(FileManager):
                     values = dict()
                     values['AMOUNT'] = insert_comma(amount)
                     t = string.Template(message_)
-                    if max_bal > int(amount) > (min_bal - 1) and phone is not None:
-                        phone = phone.replace(' ', "")
-                        compiled = ([name, phone], t.substitute(values))
-                        compiled_list.append(compiled)
+                    for today in deltas:
+                        if today.day != self.now.day:
+                            continue
+                        else:
+                            pass
+                        if max_bal > int(amount) > (min_bal - 1) and phone is not None:
+                            phone = phone.replace(' ', "")
+                            compiled = ([name, phone], t.substitute(values))
+                            compiled_list.append(compiled)
 
             elif message_type == "cheque":
                 for recipient in message_recipients:
@@ -416,20 +443,30 @@ class Controller(object, Initializer):
                 return True
 
     def message_sender(self):
+        flm = FileManager()
         self.message_collector()
         msg = "%d messages waiting to be sent" % len(self.waiting_messages)
+        balance = flm.get_config("at")['balance']
+        if balance < len(self.waiting_messages):
+            log.warning("Insufficient credit amount")
+            return
         log.info(msg)
         print >>sys.stdout, msg
         sent_list = []
         for message in self.waiting_messages:
             sender = Messenger([message])
-            sender.check_config("smsleopard")
+            sender.check_config()
             sent_msg = sender.send_sms()[0]
             sent_list.extend(sent_msg)
         msg = "%d sent messages" % len(sent_list)
         log.info(msg)
+        counter = 0
         for sent in sent_list:
+            counter += 1
             self.db.update_outbox(sent)
+        balance = balance - counter
+        flm.change_config(("at", "balance", balance))
+
 
 
 def collect_data():
