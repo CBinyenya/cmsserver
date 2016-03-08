@@ -107,7 +107,7 @@ class FileManager(object):
             'clients': {"interval": False, "status": False, "next": False},
             'balance': {"interval": False, "status": True, "min": 500, "max": 1000000},
             'renewal': {"interval": [15, 5], "status": False},
-            'newinvoice': {"interval": [15, 5], "status": True, "min": 500, "max": 1000000, "from": 400},
+            'newinvoice': {"interval": [15, 5], "status": True, "min": 500, "max": 1000000, "from": 6300, "to": 0},
             'extension': {"interval": [15, 5], "status": False},
             'birthday': {"status": False},
             'cheque': {"interval": [2, 0], "status": False},
@@ -168,7 +168,7 @@ class FileManager(object):
         renewal = "Dear Client, your $POLICY policy expires on $DATE. Kindly send us the renewal" +\
                   " instructions. For enquiries call %s. Thank you" % mobile
         newinvoice = "Dear Client. We have renewed your $POLICY policy. Kindly let us have your" + \
-                     "payment of Ksh:$AMOUNT.For enquiries call %s. Thank you." % mobile
+                     "payment of Ksh $AMOUNT.For enquiries call %s. Thank you." % mobile
         cheque = "Dear Client kindly note that your $TYPE cheque no: $NUMBER ( $BANK ) of Ksh $AMOUNT is due for" + \
                  " banking on $DUE. For enquiries call %s. Thank you" % mobile
         general = ""

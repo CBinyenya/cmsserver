@@ -8,7 +8,7 @@ S'Dear Client, your $POLICY policy expires on $DATE. Kindly send us the renewal 
 p4
 sS'newinvoice'
 p5
-S'Dear Client. We have renewed your $POLICY policy. Kindly let us have yourpayment of Ksh:$AMOUNT.For enquiries call 0714 046604/0737 046604. Thank you.'
+S'Dear Client. We have renewed your $POLICY policy. Kindly let us have yourpayment of Ksh $AMOUNT.For enquiries call 0714 046604/0737 046604. Thank you.'
 p6
 sS'quicktxt'
 p7
