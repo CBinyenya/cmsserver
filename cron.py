@@ -197,10 +197,10 @@ class MessageController(FileManager):
                     values['NUMBER'] = recipient['Number']
                     values['BANK'] = recipient['Bank']
                     t = string.Template(message_)
-                    for delta in deltas:
+                    for delta in deltas:                        
                         if delta.date() == due_date.date() and phone is not None:
                             phone = phone.replace(' ', "")
-                            compiled = ([name, phone], t.substitute(values))
+                            compiled = ([name, phone], t.substitute(values))                            
                             compiled_list.append(compiled)
             elif message_type == "birthday":
                 for recipient in message_recipients:
@@ -238,7 +238,7 @@ class MessageController(FileManager):
                 continue
             get_recipients = self.read_file(key)
             if key == "cheque":
-                get_recipients = (True, self.db.get_cheques())
+                get_recipients = (True, self.db.get_cheques())            
             if get_recipients[0]:
                 recipients = get_recipients[1]
                 msg = "Collecting %s files" % key
@@ -246,10 +246,12 @@ class MessageController(FileManager):
                 if isinstance(message_creator(key, details, recipients, message), list):
                     complete_list = message_creator(key, details, recipients, message)
                     for every_msg in complete_list:
-                        inst = PhoneNumber(every_msg[0][1])
+                        inst = PhoneNumber(str(every_msg[0][1]))
                         phn = inst.list_of_numbers()
                         if phn:
                             self.db.add_outbox([every_msg[0][0], phn[0], "waiting", every_msg[1], self.now])
+                        else:
+                            log.warning("Invalid phone number for %s" % str(every_msg[0][0]))
                 else:
                     msg = "Error in collecting %s details" % key
                     log.warning(msg)

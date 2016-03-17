@@ -1,206 +1,92 @@
-2016-03-08 16:28:33+0300 [-] Log opened.
-2016-03-08 16:28:33+0300 [-] PBServerFactory starting on 13333
-2016-03-08 16:28:33+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02925918>
-2016-03-08 16:28:33+0300 [-] Starting off the system
-2016-03-08 16:29:05+0300 [-] Daily Thread initiating messenger
-2016-03-08 16:29:05+0300 [-] this is the type extension
-2016-03-08 16:29:05+0300 [-] extension has been disabled
-2016-03-08 16:29:05+0300 [-] this is the type renewal
-2016-03-08 16:29:05+0300 [-] renewal has been disabled
-2016-03-08 16:29:05+0300 [-] this is the type clients
-2016-03-08 16:29:05+0300 [-] clients has been disabled
-2016-03-08 16:29:05+0300 [-] this is the type newinvoice
-2016-03-08 16:29:06+0300 [-] New minimum invoice 6300
-2016-03-08 16:29:06+0300 [-] New minimum invoice 6300
-2016-03-08 16:29:07+0300 [-] this is the type birthday
-2016-03-08 16:29:07+0300 [-] birthday has been disabled
-2016-03-08 16:29:07+0300 [-] this is the type cheque
-2016-03-08 16:29:07+0300 [-] cheque has been disabled
-2016-03-08 16:29:07+0300 [-] this is the type balance
-2016-03-08 16:29:07+0300 [-] 6 messages waiting to be sent
-2016-03-08 16:29:07+0300 [-] Internet error
-2016-03-08 16:29:07+0300 [-] False
-2016-03-08 16:29:07+0300 [-] Internet error
-2016-03-08 16:29:07+0300 [-] False
-2016-03-08 16:29:07+0300 [-] Internet error
-2016-03-08 16:29:07+0300 [-] False
-2016-03-08 16:29:07+0300 [-] Internet error
-2016-03-08 16:29:07+0300 [-] False
-2016-03-08 16:29:07+0300 [-] Internet error
-2016-03-08 16:29:07+0300 [-] False
-2016-03-08 16:29:07+0300 [-] Internet error
-2016-03-08 16:29:07+0300 [-] False
-2016-03-08 16:29:29+0300 [-] Hourly Thread initiating messenger
-2016-03-08 16:29:29+0300 [-] 6 messages waiting to be sent
-2016-03-08 16:29:29+0300 [-] Internet error
-2016-03-08 16:29:29+0300 [-] False
-2016-03-08 16:29:29+0300 [-] Internet error
-2016-03-08 16:29:29+0300 [-] False
-2016-03-08 16:29:29+0300 [-] Internet error
-2016-03-08 16:29:29+0300 [-] False
-2016-03-08 16:29:29+0300 [-] Internet error
-2016-03-08 16:29:29+0300 [-] False
-2016-03-08 16:29:29+0300 [-] Internet error
-2016-03-08 16:29:29+0300 [-] False
-2016-03-08 16:29:29+0300 [-] Internet error
-2016-03-08 16:29:29+0300 [-] False
-2016-03-08 16:29:48+0300 [Broker,0,127.0.0.1] admin asking for authentification
-2016-03-08 16:29:54+0300 [Broker,1,127.0.0.1] Server responding to request with 2592 renewals
-2016-03-08 16:29:54+0300 [Broker,1,127.0.0.1] Server responding to request with 670 balances
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with 670 clients
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with 1999 expiries
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheques
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with 0 bank
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with 0 payee
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheque types
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with 13 users
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with company information
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with 0 names
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with 4 group clients
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to request with 7 messages
-2016-03-08 16:29:55+0300 [Broker,1,127.0.0.1] Server responding to outbox request
-2016-03-08 16:32:16+0300 [Broker,2,127.0.0.1] admin asking for authentification
-2016-03-08 16:32:20+0300 [Broker,3,127.0.0.1] Server responding to request with 2592 renewals
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 670 balances
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 670 clients
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 1999 expiries
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 0 cheques
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 0 bank
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 0 payee
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 0 cheque types
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 13 users
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with company information
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 0 names
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 4 group clients
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to request with 7 messages
-2016-03-08 16:32:21+0300 [Broker,3,127.0.0.1] Server responding to outbox request
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] [('+254721144445', 'Dear Client. We have renewed your ALL RISKS policy. Kindly let us have yourpayment of Ksh 2,551.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254721144445', 'Dear Client. We have renewed your FIRE & ALLIED PERILS policy. Kindly let us have yourpayment of Ksh 5,575.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254721144445', 'Dear Client. We have renewed your GROUP PERSONAL ACCIDENT policy. Kindly let us have yourpayment of Ksh 23,546.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254734041416', 'Dear Client. We have renewed your KBT 453F MOTOR COMMERCIAL -  COMP - APA policy. Kindly let us have yourpayment of Ksh 238,067.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254731486813', 'Dear Client. We have renewed your KCE 102Z MOTOR PRIVATE - COMP - APA policy. Kindly let us have yourpayment of Ksh 37,207.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254722889822', 'Dear Client. We have renewed your KCE 185W MOTOR PRIVATE - COMP. policy. Kindly let us have yourpayment of Ksh 4,039.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254704236788', 'iyugioubj ')]
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] Internet error
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] False
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] Internet error
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] False
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] Internet error
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] False
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] Internet error
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] False
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] Internet error
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] False
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] Internet error
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] False
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] Internet error
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] False
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] Peer will receive following PB traceback:
-2016-03-08 16:33:03+0300 [Broker,4,127.0.0.1] Unhandled Error
+2016-03-09 12:59:11+0300 [-] Log opened.
+2016-03-09 12:59:11+0300 [-] PBServerFactory starting on 13333
+2016-03-09 12:59:11+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02795918>
+2016-03-09 12:59:11+0300 [-] Starting off the system
+2016-03-09 12:59:43+0300 [-] Daily Thread initiating messenger
+2016-03-09 12:59:43+0300 [-] this is the type extension
+2016-03-09 12:59:43+0300 [-] extension has been disabled
+2016-03-09 12:59:43+0300 [-] this is the type renewal
+2016-03-09 12:59:44+0300 [-] this is the type clients
+2016-03-09 12:59:44+0300 [-] clients has been disabled
+2016-03-09 12:59:44+0300 [-] this is the type newinvoice
+2016-03-09 12:59:44+0300 [-] New minimum invoice 6654
+2016-03-09 12:59:44+0300 [-] New minimum invoice 6654
+2016-03-09 12:59:44+0300 [-] this is the type birthday
+2016-03-09 12:59:44+0300 [-] birthday has been disabled
+2016-03-09 12:59:44+0300 [-] this is the type cheque
+2016-03-09 12:59:44+0300 [-] this is the type balance
+2016-03-09 12:59:44+0300 [-] 6 messages waiting to be sent
+2016-03-09 12:59:44+0300 [-] Internet error
+2016-03-09 12:59:44+0300 [-] False
+2016-03-09 12:59:44+0300 [-] Internet error
+2016-03-09 12:59:44+0300 [-] False
+2016-03-09 12:59:44+0300 [-] Internet error
+2016-03-09 12:59:44+0300 [-] False
+2016-03-09 12:59:44+0300 [-] Internet error
+2016-03-09 12:59:44+0300 [-] False
+2016-03-09 12:59:44+0300 [-] Internet error
+2016-03-09 12:59:44+0300 [-] False
+2016-03-09 12:59:44+0300 [-] Internet error
+2016-03-09 12:59:44+0300 [-] False
+2016-03-09 13:00:06+0300 [-] Hourly Thread initiating messenger
+2016-03-09 13:00:06+0300 [-] 6 messages waiting to be sent
+2016-03-09 13:00:06+0300 [-] Internet error
+2016-03-09 13:00:06+0300 [-] False
+2016-03-09 13:00:06+0300 [-] Internet error
+2016-03-09 13:00:06+0300 [-] False
+2016-03-09 13:00:06+0300 [-] Internet error
+2016-03-09 13:00:06+0300 [-] False
+2016-03-09 13:00:06+0300 [-] Internet error
+2016-03-09 13:00:06+0300 [-] False
+2016-03-09 13:00:06+0300 [-] Internet error
+2016-03-09 13:00:06+0300 [-] False
+2016-03-09 13:00:06+0300 [-] Internet error
+2016-03-09 13:00:06+0300 [-] False
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 3059 renewals
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 696 balances
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 696 clients
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 2109 expiries
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 1 cheques
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 1 bank
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 1 payee
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 1 cheque types
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 13 users
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with company information
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 0 names
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 4 group clients
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to request with 7 messages
+2016-03-09 13:00:37+0300 [Broker,0,127.0.0.1] Server responding to outbox request
+2016-03-09 13:00:39+0300 [Broker,0,127.0.0.1] Received SIGINT, shutting down.
+2016-03-09 13:00:39+0300 [twisted.spread.pb.PBServerFactory] (TCP Port 13333 Closed)
+2016-03-09 13:00:39+0300 [twisted.spread.pb.PBServerFactory] Stopping factory <twisted.spread.pb.PBServerFactory instance at 0x02795918>
+2016-03-09 13:00:39+0300 [-] Connection close failed
 	Traceback (most recent call last):
-	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 153, in gotItem
-	    self.callExpressionReceived(item)
-	  File "d:\python27\lib\site-packages\twisted\spread\banana.py", line 116, in callExpressionReceived
-	    self.expressionReceived(obj)
-	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 565, in expressionReceived
-	    method(*sexp[1:])
-	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 877, in proto_message
-	    self._recvMessage(self.localObjectForID, requestID, objectID, message, answerRequired, netArgs, netKw)
+	  File "d:\python27\lib\site-packages\twisted\internet\defer.py", line 295, in addCallbacks
+	    self._runCallbacks()
+	  File "d:\python27\lib\site-packages\twisted\internet\defer.py", line 577, in _runCallbacks
+	    current.result = callback(current.result, *args, **kw)
+	  File "d:\python27\lib\site-packages\twisted\internet\base.py", line 429, in _continueFiring
+	    callable(*args, **kwargs)
+	  File "d:\python27\lib\site-packages\twisted\enterprise\adbapi.py", line 393, in finalClose
+	    self._close(conn)
 	--- <exception caught here> ---
-	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 891, in _recvMessage
-	    netResult = object.remoteMessageReceived(self, message, netArgs, netKw)
-	  File "d:\python27\lib\site-packages\twisted\spread\pb.py", line 242, in perspectiveMessageReceived
-	    state = method(*args, **kw)
-	  File "runserver.py", line 371, in perspective_sendMessage
-	    return  self.todoList.sendMessage(arg)
-	  File "runserver.py", line 219, in sendMessage
-	    response = message_sender()
-	  File "D:\Projects\CMS\server1.3\functions.py", line 49, in message_sender
-	    if sent:
-	exceptions.UnboundLocalError: local variable 'sent' referenced before assignment
+	  File "d:\python27\lib\site-packages\twisted\enterprise\adbapi.py", line 439, in _close
+	    conn.close()
+	sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 6408 and this is thread id 712
 	
-2016-03-08 16:35:45+0300 [-] Log opened.
-2016-03-08 16:35:45+0300 [-] PBServerFactory starting on 13333
-2016-03-08 16:35:45+0300 [-] Starting factory <twisted.spread.pb.PBServerFactory instance at 0x02755918>
-2016-03-08 16:35:45+0300 [-] Starting off the system
-2016-03-08 16:36:19+0300 [-] Daily Thread initiating messenger
-2016-03-08 16:36:19+0300 [-] 7 messages waiting to be sent
-2016-03-08 16:36:19+0300 [-] Internet error
-2016-03-08 16:36:19+0300 [-] False
-2016-03-08 16:36:19+0300 [-] Internet error
-2016-03-08 16:36:19+0300 [-] False
-2016-03-08 16:36:19+0300 [-] Internet error
-2016-03-08 16:36:19+0300 [-] False
-2016-03-08 16:36:19+0300 [-] Internet error
-2016-03-08 16:36:19+0300 [-] False
-2016-03-08 16:36:19+0300 [-] Internet error
-2016-03-08 16:36:19+0300 [-] False
-2016-03-08 16:36:19+0300 [-] Internet error
-2016-03-08 16:36:19+0300 [-] False
-2016-03-08 16:36:19+0300 [-] Internet error
-2016-03-08 16:36:19+0300 [-] False
-2016-03-08 16:36:41+0300 [-] Hourly Thread initiating messenger
-2016-03-08 16:36:41+0300 [-] 7 messages waiting to be sent
-2016-03-08 16:36:41+0300 [-] Internet error
-2016-03-08 16:36:41+0300 [-] False
-2016-03-08 16:36:41+0300 [-] Internet error
-2016-03-08 16:36:41+0300 [-] False
-2016-03-08 16:36:41+0300 [-] Internet error
-2016-03-08 16:36:41+0300 [-] False
-2016-03-08 16:36:41+0300 [-] Internet error
-2016-03-08 16:36:41+0300 [-] False
-2016-03-08 16:36:41+0300 [-] Internet error
-2016-03-08 16:36:41+0300 [-] False
-2016-03-08 16:36:41+0300 [-] Internet error
-2016-03-08 16:36:41+0300 [-] False
-2016-03-08 16:36:41+0300 [-] Internet error
-2016-03-08 16:36:41+0300 [-] False
-2016-03-08 16:36:41+0300 [Broker,0,127.0.0.1] admin asking for authentification
-2016-03-08 16:36:44+0300 [Broker,1,127.0.0.1] Server responding to request with 2592 renewals
-2016-03-08 16:36:44+0300 [Broker,1,127.0.0.1] Server responding to request with 670 balances
-2016-03-08 16:36:44+0300 [Broker,1,127.0.0.1] Server responding to request with 670 clients
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to request with 1999 expiries
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheques
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to request with 0 bank
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to request with 0 payee
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to request with 0 cheque types
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to request with 13 users
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to request with company information
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to request with 0 names
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to request with 4 group clients
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to request with 7 messages
-2016-03-08 16:36:45+0300 [Broker,1,127.0.0.1] Server responding to outbox request
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] [('+254721144445', 'Dear Client. We have renewed your ALL RISKS policy. Kindly let us have yourpayment of Ksh 2,551.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254721144445', 'Dear Client. We have renewed your FIRE & ALLIED PERILS policy. Kindly let us have yourpayment of Ksh 5,575.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254721144445', 'Dear Client. We have renewed your GROUP PERSONAL ACCIDENT policy. Kindly let us have yourpayment of Ksh 23,546.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254734041416', 'Dear Client. We have renewed your KBT 453F MOTOR COMMERCIAL -  COMP - APA policy. Kindly let us have yourpayment of Ksh 238,067.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254731486813', 'Dear Client. We have renewed your KCE 102Z MOTOR PRIVATE - COMP - APA policy. Kindly let us have yourpayment of Ksh 37,207.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254722889822', 'Dear Client. We have renewed your KCE 185W MOTOR PRIVATE - COMP. policy. Kindly let us have yourpayment of Ksh 4,039.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254704236788', 'iyugioubj '), ('+254704346788', 'ugoiu')]
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] Internet error
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] False
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] Internet error
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] False
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] Internet error
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] False
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] Internet error
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] False
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] Internet error
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] False
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] Internet error
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] False
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] Internet error
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] False
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] Internet error
-2016-03-08 16:37:10+0300 [Broker,2,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] [('+254721144445', 'Dear Client. We have renewed your ALL RISKS policy. Kindly let us have yourpayment of Ksh 2,551.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254721144445', 'Dear Client. We have renewed your FIRE & ALLIED PERILS policy. Kindly let us have yourpayment of Ksh 5,575.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254721144445', 'Dear Client. We have renewed your GROUP PERSONAL ACCIDENT policy. Kindly let us have yourpayment of Ksh 23,546.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254734041416', 'Dear Client. We have renewed your KBT 453F MOTOR COMMERCIAL -  COMP - APA policy. Kindly let us have yourpayment of Ksh 238,067.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254731486813', 'Dear Client. We have renewed your KCE 102Z MOTOR PRIVATE - COMP - APA policy. Kindly let us have yourpayment of Ksh 37,207.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254722889822', 'Dear Client. We have renewed your KCE 185W MOTOR PRIVATE - COMP. policy. Kindly let us have yourpayment of Ksh 4,039.For enquiries call 0714 046604/0737 046604. Thank you.'), ('+254704236788', 'iyugioubj '), ('+254704346788', 'ugoiu'), ('+254724239383', 'Dear Client, your KBE 737E BURGLARY INSURANCE policy expires on 2011-12-31. Kindly send us the renewal instructions. For enquiries call 0714 046604/0737 046604. Thank you'), ('+254722726345', 'Dear Client, your KAT 493D MOTOR PRIVATE - COMP. policy expires on 2008-02-08. Kindly send us the renewal instructions. For enquiries call 0714 046604/0737 046604. Thank you'), ('+254722854443', 'Dear Client, your FIRE & ALLIED PERILS policy expires on 2016-05-19. Kindly send us the renewal instructions. For enquiries call 0714 046604/0737 046604. Thank you')]
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] Internet error
-2016-03-08 16:37:46+0300 [Broker,3,127.0.0.1] False
+2016-03-09 13:00:39+0300 [-] Connection close failed
+	Traceback (most recent call last):
+	  File "d:\python27\lib\site-packages\twisted\internet\defer.py", line 295, in addCallbacks
+	    self._runCallbacks()
+	  File "d:\python27\lib\site-packages\twisted\internet\defer.py", line 577, in _runCallbacks
+	    current.result = callback(current.result, *args, **kw)
+	  File "d:\python27\lib\site-packages\twisted\internet\base.py", line 429, in _continueFiring
+	    callable(*args, **kwargs)
+	  File "d:\python27\lib\site-packages\twisted\enterprise\adbapi.py", line 393, in finalClose
+	    self._close(conn)
+	--- <exception caught here> ---
+	  File "d:\python27\lib\site-packages\twisted\enterprise\adbapi.py", line 439, in _close
+	    conn.close()
+	sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 6280 and this is thread id 712
+	
+2016-03-09 13:00:39+0300 [-] Main loop terminated.

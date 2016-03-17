@@ -114,7 +114,7 @@ class FileManager(object):
             'clients': {"interval": False, "status": False, "next": False},
             'balance': {"interval": [1], "status": True, "min": 500, "max": 1000000},
             'renewal': {"interval": [15, 5], "status": False},
-            'newinvoice': {"interval": [15, 5], "status": True, "min": 500, "max": 1000000, "from": 6300, "to": 0},
+            'newinvoice': {"interval": [15, 5], "status": True, "min": 500, "max": 1000000, "from": 6650, "to": 0},
             'extension': {"interval": [15, 5], "status": False},
             'birthday': {"status": False},
             'cheque': {"interval": [2, 0], "status": False},
